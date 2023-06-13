@@ -14,12 +14,18 @@ import { Button } from '../Button';
 interface ProductModal {
   visible: boolean;
   onClose: () => void;
+  onAddToCart: (product: Product) => void;
   product: null | Product;
 }
 
-export function ProductModal({ visible, onClose, product }: ProductModal) {
+export function ProductModal({ visible, onClose, onAddToCart, product }: ProductModal) {
   if (!product) {
     return null;
+  }
+
+  function handleAddToCart() {
+    onAddToCart(product!);
+    onClose();
   }
 
   return (
@@ -68,7 +74,9 @@ export function ProductModal({ visible, onClose, product }: ProductModal) {
             <Text size={18} weight='600'>{formatCurrency(product.price)}</Text>
           </PriceContainer>
 
-          <Button>Adicionar ao pedido</Button>
+          <Button onPress={handleAddToCart}>
+            Adicionar ao pedido
+          </Button>
         </FooterContainer>
       </Footer>
     </Modal>
