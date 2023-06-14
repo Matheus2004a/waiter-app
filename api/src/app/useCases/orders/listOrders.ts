@@ -9,7 +9,7 @@ export async function listOrders(req: Request, res: Response) {
       .populate('products.product');
 
     if (orders.length <= 0) {
-      throw new Error('Nenhum pedido feito');
+      return res.status(401).send({ message: 'Nenhum pedido encontrado' });
     }
 
     res.send(orders);
