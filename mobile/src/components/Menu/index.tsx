@@ -42,7 +42,9 @@ export function Menu({ onAddToCart, products }: MenuProps) {
         renderItem={({ item: product }) => (
           <ProductContainer onPress={() => handleOpenModal(product)}>
             <Image
-              source={{ uri: product.imagePath }}
+              source={{
+                uri: `https://d00b-2804-431-c7da-f95b-5d41-3ce-1a8a-77f5.sa.ngrok.io/uploads/${product.imagePath}`
+              }}
             />
 
             <ProductDetails>

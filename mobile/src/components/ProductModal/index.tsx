@@ -35,7 +35,9 @@ export function ProductModal({ visible, onClose, onAddToCart, product }: Product
       presentationStyle='pageSheet'
       onRequestClose={onClose}
     >
-      <Image source={{ uri: product.imagePath }}>
+      <Image source={{
+        uri: `https://58e4-2804-431-c7da-f95b-5db5-f6f7-f76e-a82d.sa.ngrok.io/uploads/${product.imagePath}`
+      }}>
         <CloseButton onPress={onClose}>
           <Close />
         </CloseButton>

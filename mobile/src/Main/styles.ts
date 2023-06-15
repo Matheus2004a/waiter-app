@@ -16,7 +16,7 @@ export const CategoriesContainer = styled.View`
 `;
 
 export const MenuContainer = styled.View`
-  height: 50px;
+  flex: 1;
 `;
 
 export const Footer = styled.View`

@@ -9,18 +9,20 @@ import { Text } from '../Text';
 import { PlusCircle } from '../Icons/PlusCircle';
 import { MinusCircle } from '../Icons/MinusCircle';
 import { Button } from '../Button';
+import { OrderConfirmedModal } from '../OrderConfirmedModal';
 
 import { Item, ProductContainer, Actions, Image, Summary, TotalContainer } from './styles';
-import { OrderConfirmedModal } from '../OrderConfirmedModal';
+import { api } from '../../services/api';
 
 interface CartProps {
   cartItems: CartItem[];
   onAdd: (product: Product) => void;
   onDecrement: (product: Product) => void;
   onConfirmOrder: () => void;
+  selectedTable: string;
 }
 
-export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProps) {
+export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder, selectedTable }: CartProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -28,7 +30,25 @@ export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProp
     return total + cartItem.quantity * cartItem.product.price;
   }, 0);
 
-  function handleConfirmOrder() {
+  async function handleConfirmOrder() {
+    const payload = {
+      table: selectedTable,
+      products: cartItems.map((cartItem)=> ({
+        product: cartItem.product._id,
+        quantity: cartItem.quantity,
+      }))
+    };
+
+    try {
+      setIsLoading(true);
+      await api.post(`${api.defaults.baseURL}/orders`, payload);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+
     setIsModalVisible(true);
   }
 
@@ -53,7 +73,9 @@ export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProp
           renderItem={({ item: cartItem }) => (
             <Item>
               <ProductContainer>
-                <Image source={{ uri: cartItem.product.imagePath }} />
+                <Image source={{
+                  uri: `https://d00b-2804-431-c7da-f95b-5d41-3ce-1a8a-77f5.sa.ngrok.io/uploads/${cartItem.product.imagePath}`
+                }} />
 
                 <Text>{cartItem.quantity}x</Text>
 
