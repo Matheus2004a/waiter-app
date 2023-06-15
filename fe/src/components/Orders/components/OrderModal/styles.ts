@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface Props {
+  isOrderDone: boolean;
+}
+
 export const Overlay = styled.div`
   position: fixed;
   inset: 0;
@@ -102,9 +106,9 @@ export const OrderDetails = styled.section`
   }
 `;
 
-export const Footer = styled.footer`
+export const Footer = styled.footer<Props>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ isOrderDone }) => isOrderDone ? 'center' : 'space-between'} ;
   margin-top: 2rem;
 
   button {
@@ -121,5 +125,10 @@ export const Footer = styled.footer`
       color: #FFFFFF;
       padding: 14px 28px;
     }
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;

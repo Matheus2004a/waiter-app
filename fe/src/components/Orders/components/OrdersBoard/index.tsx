@@ -1,19 +1,30 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { Order } from '../../../../types/Order';
 import { OrderModal } from '../OrderModal';
 
 import { Board, OrdersContainer } from './styles';
+import { api } from '../../../../services/api';
 
 interface OrdersBoardProps {
   icon: string;
   title: string;
   orders: Order[];
+  onCancelOrderBoard: (orderId: string) => void;
+  onOrderStatusChange: (orderId: string, status: Order['status']) => void
 }
 
-export function OrdersBoard({ icon, title, orders }: OrdersBoardProps) {
+export function OrdersBoard({
+  icon,
+  title,
+  orders,
+  onCancelOrderBoard,
+  onOrderStatusChange
+}: OrdersBoardProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<null | Order>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleOpenModal(order: Order) {
     setIsModalVisible(true);
@@ -25,12 +36,48 @@ export function OrdersBoard({ icon, title, orders }: OrdersBoardProps) {
     setSelectedOrder(null);
   }
 
+  async function handleChangeOrderStatus() {
+    try {
+      setIsLoading(true);
+
+      const status = selectedOrder?.status === 'WAITING'
+        ? 'IN_PRODUCTION' : 'DONE';
+
+      await api.patch(`${api.defaults.baseURL}/orders/${selectedOrder?._id}`, { status });
+      toast.success(`O pedido da Mesa ${selectedOrder?.table} teve o status alterado`);
+      onOrderStatusChange(selectedOrder!._id, status);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+
+    setIsLoading(false);
+    setIsModalVisible(false);
+  }
+
+  async function handleCancelOrder() {
+    try {
+      setIsLoading(true);
+      await api.delete(`${api.defaults.baseURL}/orders/${selectedOrder?._id}`);
+      toast.success(`O pedido da Mesa ${selectedOrder?.table} foi cancelado`);
+    } catch (error) {
+      setIsLoading(false);
+    }
+
+    onCancelOrderBoard(selectedOrder!._id);
+    setIsLoading(false);
+    setIsModalVisible(false);
+  }
+
   return (
     <Board>
       <OrderModal
         visible={isModalVisible}
         order={selectedOrder}
         onClose={handleCloseModal}
+        onCancelOrder={handleCancelOrder}
+        isLoading={isLoading}
+        onOrderStatusChange={handleChangeOrderStatus}
       />
 
       <header>

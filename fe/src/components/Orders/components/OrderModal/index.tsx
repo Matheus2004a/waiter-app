@@ -10,9 +10,19 @@ interface OrderModalProps {
   visible: boolean;
   order: Order | null;
   onClose: () => void;
+  onCancelOrder: () => Promise<void>;
+  isLoading: boolean;
+  onOrderStatusChange: () => void;
 }
 
-export function OrderModal({ visible, order, onClose }: OrderModalProps) {
+export function OrderModal({
+  visible,
+  order,
+  onClose,
+  onCancelOrder,
+  isLoading,
+  onOrderStatusChange,
+}: OrderModalProps) {
   if (!visible || !order) {
     return null;
   }
@@ -76,25 +86,42 @@ export function OrderModal({ visible, order, onClose }: OrderModalProps) {
           {order.products.map(({ _id, product, quantity }) => (
             <Fragment key={_id}>
               <figure className='item'>
-                <img src={product.imagePath} alt={product.name} />
+                <img
+                  src={`https://ff90-2804-431-c7da-f95b-5d41-3ce-1a8a-77f5.sa.ngrok.io/uploads/${product.imagePath}`}
+                  alt={product.name}
+                />
                 <span className='quantity'>{quantity}x</span>
                 <div className='product-details'>
                   <strong>{product.name}</strong>
                   <small>{formatCurrency(product.price)}</small>
                 </div>
               </figure>
-
-              <div className="total">
-                <p>Total</p>
-                <strong>{formatCurrency(total)}</strong>
-              </div>
             </Fragment>
           ))}
+
+          <div className="total">
+            <p>Total</p>
+            <strong>{formatCurrency(total)}</strong>
+          </div>
         </OrderDetails>
 
-        <Footer>
-          <button type='reset'>Cancelar Pedido</button>
-          <button type='button'>Concluir pedido</button>
+        <Footer isOrderDone={order.status === 'DONE'}>
+          <button
+            type='reset'
+            onClick={onCancelOrder}
+            disabled={isLoading}
+          >
+            Cancelar Pedido
+          </button>
+          {order.status !== 'DONE' && (
+            <button
+              type='button'
+              disabled={isLoading}
+              onClick={onOrderStatusChange}
+            >
+              Concluir pedido
+            </button>
+          )}
         </Footer>
       </ModalBody>
     </Overlay>
