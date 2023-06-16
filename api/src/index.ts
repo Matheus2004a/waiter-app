@@ -7,6 +7,7 @@ import { Server } from 'socket.io';
 import * as dotenv from 'dotenv';
 
 import { router } from './router';
+import { cors } from './app/middlewares/cors';
 
 dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
@@ -20,13 +21,7 @@ mongoose.connect(uri)
   .then(() => {
     const port = process.env.PORT;
 
-    app.use((req, res, next) => {
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', '*');
-      res.setHeader('Access-Control-Allow-Headers', '*');
-      next();
-    });
-
+    app.use(cors);
     app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
     app.use(express.json());
     app.use(router);
