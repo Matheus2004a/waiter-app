@@ -9,6 +9,7 @@ import { PlusCircle } from '../Icons/PlusCircle';
 import { ProductModal } from '../ProductModal';
 
 import { ProductContainer, Image, ProductDetails, Separator, AddToCartButton } from './styles';
+import { api } from '../../services/api';
 
 interface MenuProps {
   onAddToCart: (product: Product) => void;
@@ -43,7 +44,7 @@ export function Menu({ onAddToCart, products }: MenuProps) {
           <ProductContainer onPress={() => handleOpenModal(product)}>
             <Image
               source={{
-                uri: `https://d00b-2804-431-c7da-f95b-5d41-3ce-1a8a-77f5.sa.ngrok.io/uploads/${product.imagePath}`
+                uri: `${api.defaults.baseURL}/uploads/${product.imagePath}`
               }}
             />
 

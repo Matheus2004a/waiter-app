@@ -1,10 +1,13 @@
 import { Fragment, useEffect } from 'react';
 
-import { Footer, ModalBody, OrderDetails, Overlay } from './styles';
+import { Order } from '../../../../types/Order';
+import { api } from '../../../../services/api';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
-import { Order } from '../../../../types/Order';
+
 import { formatCurrency } from '../../../../utils/formatCurrency';
+
+import { Footer, ModalBody, OrderDetails, Overlay } from './styles';
 
 interface OrderModalProps {
   visible: boolean;
@@ -60,6 +63,8 @@ export function OrderModal({
     };
   }, [onClose]);
 
+  const statusBoards = statusOrder[order.status];
+
   return (
     <Overlay>
       <ModalBody>
@@ -75,8 +80,8 @@ export function OrderModal({
           <small>Status do Pedido</small>
 
           <figure>
-            <span>{statusOrder[order.status] && statusOrder[order.status].icon}</span>
-            <strong>{statusOrder[order.status] && statusOrder[order.status].name}</strong>
+            <span>{statusBoards && statusBoards.icon}</span>
+            <strong>{statusBoards && statusBoards.name}</strong>
           </figure>
         </div>
 
@@ -87,7 +92,7 @@ export function OrderModal({
             <Fragment key={_id}>
               <figure className='item'>
                 <img
-                  src={`https://ff90-2804-431-c7da-f95b-5d41-3ce-1a8a-77f5.sa.ngrok.io/uploads/${product.imagePath}`}
+                  src={`${api.defaults.baseURL}/uploads/${product.imagePath}`}
                   alt={product.name}
                 />
                 <span className='quantity'>{quantity}x</span>
@@ -119,7 +124,12 @@ export function OrderModal({
               disabled={isLoading}
               onClick={onOrderStatusChange}
             >
-              Concluir pedido
+              {statusOrder['WAITING'] ?
+                <span>{statusOrder['WAITING'].icon} Iniciar produção</span>
+                : (
+                  <span>{statusOrder['IN_PRODUCTION'].icon} Concluir pedido</span>
+                )
+              }
             </button>
           )}
         </Footer>

@@ -74,7 +74,7 @@ export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder, selectedTa
             <Item>
               <ProductContainer>
                 <Image source={{
-                  uri: `https://d00b-2804-431-c7da-f95b-5d41-3ce-1a8a-77f5.sa.ngrok.io/uploads/${cartItem.product.imagePath}`
+                  uri: `${api.defaults.baseURL}/uploads/${cartItem.product.imagePath}`
                 }} />
 
                 <Text>{cartItem.quantity}x</Text>

@@ -17,5 +17,6 @@ export const Icon = styled.View`
   justify-content: center;
   box-shadow: 0px 2px 1px rgba(0, 0, 0, ${isAndroid ? 1 : 0.1});
   elevation: 2;
+  margin-bottom: 8px;
 `;
 

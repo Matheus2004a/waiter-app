@@ -35,7 +35,7 @@ export function Categories({ categories, onSelectCategory }: CategoriesProps) {
         return (
           <CategoryContainer onPress={() => handleSelectCategory(category._id)}>
             <Icon>
-              <Image source={{ uri: category.icon }} />
+              <Text>{category.icon}</Text>
             </Icon>
 
             <Text size={14} weight='600' opacity={isSelected ? 1 : 0.5}>

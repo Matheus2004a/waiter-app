@@ -13,6 +13,7 @@ export const Container = styled.SafeAreaView`
 export const CategoriesContainer = styled.View`
   height: 63px;
   margin-top: 34px;
+  flex: 0.2;
 `;
 
 export const MenuContainer = styled.View`
