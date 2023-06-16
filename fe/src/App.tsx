@@ -11,7 +11,7 @@ function App() {
       <GlobalStyles />
       <Header />
       <Orders />
-      <ToastContainer position='top-right' />
+      <ToastContainer position='bottom-center' />
     </>
   );
 }
