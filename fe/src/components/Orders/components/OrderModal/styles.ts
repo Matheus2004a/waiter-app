@@ -106,6 +106,29 @@ export const OrderDetails = styled.section`
   }
 `;
 
+export const OrderContainerItem = styled.div`
+  max-height: 160px;
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #D73035;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+  }
+`;
+
 export const Footer = styled.footer<Props>`
   display: flex;
   justify-content: ${({ isOrderDone }) => isOrderDone ? 'center' : 'space-between'} ;

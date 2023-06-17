@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Order } from '../../../../types/Order';
 import { api } from '../../../../services/api';
@@ -7,7 +7,7 @@ import closeIcon from '../../../../assets/images/close-icon.svg';
 
 import { formatCurrency } from '../../../../utils/formatCurrency';
 
-import { Footer, ModalBody, OrderDetails, Overlay } from './styles';
+import { Footer, ModalBody, OrderContainerItem, OrderDetails, Overlay } from './styles';
 
 interface OrderModalProps {
   visible: boolean;
@@ -88,9 +88,9 @@ export function OrderModal({
         <OrderDetails>
           <small>Itens</small>
 
-          {order.products.map(({ _id, product, quantity }) => (
-            <Fragment key={_id}>
-              <figure className='item'>
+          <OrderContainerItem>
+            {order.products.map(({ _id, product, quantity }) => (
+              <figure className='item' key={_id}>
                 <img
                   src={`${api.defaults.baseURL}/uploads/${product.imagePath}`}
                   alt={product.name}
@@ -101,8 +101,8 @@ export function OrderModal({
                   <small>{formatCurrency(product.price)}</small>
                 </div>
               </figure>
-            </Fragment>
-          ))}
+            ))}
+          </OrderContainerItem>
 
           <div className="total">
             <p>Total</p>
