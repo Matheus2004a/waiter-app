@@ -34,10 +34,12 @@ export function OrderModal({
     WAITING: {
       icon: '🕑',
       name: 'Fila de espera',
+      label: 'Iniciar produção',
     },
     IN_PRODUCTION: {
       icon: '👩‍🍳',
       name: 'Em produção',
+      label: 'Finalizar pedido',
     },
     DONE: {
       icon: '✅',
@@ -124,10 +126,10 @@ export function OrderModal({
               disabled={isLoading}
               onClick={onOrderStatusChange}
             >
-              {statusOrder['WAITING'] ?
-                <span>{statusOrder['WAITING'].icon} Iniciar produção</span>
+              {order.status === 'WAITING' ?
+                <span>Iniciar produção</span>
                 : (
-                  <span>{statusOrder['IN_PRODUCTION'].icon} Concluir pedido</span>
+                  <span>Concluir pedido</span>
                 )
               }
             </button>
