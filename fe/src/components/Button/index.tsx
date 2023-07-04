@@ -1,9 +1,9 @@
-interface ButtonProps {
-  children: string | JSX.Element
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: string | JSX.Element;
 }
 
-export default function Button({ children }: ButtonProps) {
+export default function Button({ type, children }: ButtonProps) {
   return (
-    <button>{children}</button>
+    <button type={type}>{children}</button>
   );
 }

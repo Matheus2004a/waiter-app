@@ -1,26 +1,34 @@
 import Button from '../../components/Button';
 
-import { Container } from './style';
+import { Container, Fieldset, Form, SectionWelcome } from './style';
+
+import eye from '../../assets/images/eye.svg';
 
 export default function Login() {
   return (
     <Container>
-      <h3>Bem-vindo(a) ao</h3>
-      <h1><strong>WaiterApp</strong></h1>
+      <SectionWelcome>
+        <h4>Bem-vindo(a) ao</h4>
+        <p><strong>Waiter</strong>App</p>
+      </SectionWelcome>
 
-      <form action="">
-        <fieldset>
+      <Form>
+        <Fieldset>
           <label htmlFor="email">E-mail</label>
           <input type="email" placeholder='Seu e-mail de acesso' id='email' />
-        </fieldset>
+        </Fieldset>
 
-        <fieldset>
+        <Fieldset>
           <label htmlFor="password">Senha</label>
-          <input type="email" placeholder='Informe sua senha' id='password' />
-        </fieldset>
+          <input type="password" placeholder='Informe sua senha' id='password' />
 
-        <Button>Fazer Login</Button>
-      </form>
+          <span>
+            <img src={eye} alt="icon-eye" />
+          </span>
+        </Fieldset>
+
+        <Button type="submit">Fazer Login</Button>
+      </Form>
     </Container>
   );
 }
