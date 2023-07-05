@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface invalidFields {
+  isInvalid: boolean;
+}
+
 export const Container = styled.main`
   background: #FAFAFA;
   display: flex;
@@ -7,6 +11,7 @@ export const Container = styled.main`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100%;
 `;
 
 export const SectionWelcome = styled.section`
@@ -24,17 +29,8 @@ export const SectionWelcome = styled.section`
 `;
 
 export const Form = styled.form`
-  width: 30%;
   display: grid;
-
-  button {
-    border-radius: 44px;
-    background: var(--brand-red, #D73035);
-    padding: 14px 28px;
-    color: var(--gray-0, #FFF);
-    font-weight: 600;
-    margin-top: 40px;
-  }
+  width: calc(100% - 70%);
 `;
 
 export const Fieldset = styled.fieldset`
@@ -53,19 +49,45 @@ export const Fieldset = styled.fieldset`
     padding: 0px 16px;
     border-radius: 8px;
     border: 1px solid var(--gray-200, #CCC);
-    transition: border 0.2s ease-in;
+    border-color: ${({ isInvalid }: invalidFields) => isInvalid && 'var(--brand-red, #D73035)'};
     color: var(--gray-400, #666);
     caret-color: var(--brand-red, #D73035);
 
     &:focus {
       outline: none;
       border: 1px solid var(--gray-400, #666);
+      border-color: ${({ isInvalid }: invalidFields) => isInvalid && 'var(--brand-red, #D73035)'};
     }
   }
 
-  span {
+  .feedback-error {
+    font-size: 14px;
+    color: var(--brand-red, #D73035);
+  }
+
+  .eye {
+    cursor: pointer;
     position: absolute;
     right: 15px;
-    bottom: 10px;
+    bottom: ${({ isInvalid }: invalidFields) => isInvalid ? '35px' : '10px'};
+  }
+`;
+
+export const StyledButton = styled.button`
+  border-radius: 44px;
+  padding: 14px 28px;
+  color: var(--gray-0, #FFF);
+  font-weight: 600;
+  margin-top: 40px;
+  background: var(--brand-red, #D73035);
+  transition: background 0.3s ease-in-out;
+
+  &:hover {
+    background: var(--brand-red-dark, #8A1114);
+  }
+
+  &:disabled {
+    background: var(--gray-200, #CCC);
+    cursor: not-allowed;
   }
 `;

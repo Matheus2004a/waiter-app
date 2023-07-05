@@ -20,7 +20,7 @@ export default function useOrders() {
 
   async function getOrders() {
     try {
-      const { data } = await api.get(`${api.defaults.baseURL}/orders`);
+      const { data } = await api.get('/orders');
       setOrders(data);
     } catch (error) {
       console.error(error);
