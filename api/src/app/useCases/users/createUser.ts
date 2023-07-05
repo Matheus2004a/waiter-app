@@ -16,6 +16,10 @@ export async function createUser(req: Request, res: Response) {
 
     res.status(201).send(user);
   } catch (error: any) {
+    if (error.message.startsWith('E11000')) {
+      return res.status(409).send({ message: 'Usuário já cadastrado' });
+    }
+
     res.status(500).send({ message: error.message });
   }
 }

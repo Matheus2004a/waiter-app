@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-interface invalidFields {
-  isInvalid: boolean;
+interface InvalidFields {
+  isInvalid: string;
 }
 
 export const Container = styled.main`
@@ -33,7 +33,7 @@ export const Form = styled.form`
   width: calc(100% - 70%);
 `;
 
-export const Fieldset = styled.fieldset`
+export const Fieldset = styled.fieldset<InvalidFields>`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -49,14 +49,14 @@ export const Fieldset = styled.fieldset`
     padding: 0px 16px;
     border-radius: 8px;
     border: 1px solid var(--gray-200, #CCC);
-    border-color: ${({ isInvalid }: invalidFields) => isInvalid && 'var(--brand-red, #D73035)'};
+    border-color: ${({ isInvalid }) => isInvalid && 'var(--brand-red, #D73035)'};
     color: var(--gray-400, #666);
     caret-color: var(--brand-red, #D73035);
 
     &:focus {
       outline: none;
       border: 1px solid var(--gray-400, #666);
-      border-color: ${({ isInvalid }: invalidFields) => isInvalid && 'var(--brand-red, #D73035)'};
+      border-color: ${({ isInvalid }) => isInvalid && 'var(--brand-red, #D73035)'};
     }
   }
 
@@ -69,8 +69,14 @@ export const Fieldset = styled.fieldset`
     cursor: pointer;
     position: absolute;
     right: 15px;
-    bottom: ${({ isInvalid }: invalidFields) => isInvalid ? '35px' : '10px'};
+    bottom: ${({ isInvalid }) => isInvalid ? '35px' : '10px'};
   }
+`;
+
+export const ErrorMessage = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
 export const StyledButton = styled.button`

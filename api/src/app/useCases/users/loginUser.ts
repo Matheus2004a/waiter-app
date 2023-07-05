@@ -19,7 +19,7 @@ export async function loginUser(req: Request, res: Response) {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(401).send({ message: 'Falha de autenticação' });
+      return res.status(401).send({ message: 'Senha incorreta. Tente novamente' });
     }
 
     const payload = {
