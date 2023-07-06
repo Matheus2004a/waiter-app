@@ -1,14 +1,14 @@
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
-import { schemaLogin } from '../../validations/schemaLogin';
 import { FormData } from '../../types/Login';
+import { schemaLogin } from '../../validations/schemaLogin';
+import useLogin from './useLogin';
 
 import { Container, Fieldset, Form, SectionWelcome, StyledButton } from './style';
 
-import eye from '../../assets/images/eye.svg';
 import eyeHidden from '../../assets/images/eye-hidden.svg';
-import useLogin from './useLogin';
+import eye from '../../assets/images/eye.svg';
 
 export default function Login() {
   const {
@@ -35,7 +35,7 @@ export default function Login() {
       </SectionWelcome>
 
       <Form onSubmit={handleSubmit(submitLogin)}>
-        <Fieldset isInvalid={errors.email?.message}>
+        <Fieldset isInvalid={errors.email}>
           <label htmlFor="email">E-mail</label>
           <input
             type="email"
@@ -45,12 +45,12 @@ export default function Login() {
           />
           {errors.email &&
             <span className='feedback-error'>
-              {renderErrorMessage(errors.email.message)}
+              {renderErrorMessage(errors.email?.message)}
             </span>
           }
         </Fieldset>
 
-        <Fieldset isInvalid={errors.password?.message}>
+        <Fieldset isInvalid={errors.password}>
           <label htmlFor="password">Senha</label>
           <input
             type={visiblePassword}
@@ -60,7 +60,7 @@ export default function Login() {
           />
           {errors.password &&
             <span className='feedback-error'>
-              {renderErrorMessage(errors.password.message)}
+              {renderErrorMessage(errors.password?.message)}
             </span>
           }
 
@@ -71,7 +71,7 @@ export default function Login() {
         </Fieldset>
 
         <StyledButton
-          type="submit"
+          type='submit'
           disabled={isDisabledButton}
         >
           Fazer Login

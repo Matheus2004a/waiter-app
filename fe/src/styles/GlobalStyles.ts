@@ -62,4 +62,8 @@ export const GlobalStyles = createGlobalStyle`
   button, fieldset {
     border: none;
   }
+
+  ul {
+    list-style: none;
+  }
 `;

@@ -1,7 +1,8 @@
+import { FieldError } from 'react-hook-form';
 import styled from 'styled-components';
 
 interface InvalidFields {
-  isInvalid: string;
+  isInvalid: FieldError | undefined;
 }
 
 export const Container = styled.main`
