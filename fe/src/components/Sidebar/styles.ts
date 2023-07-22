@@ -7,8 +7,10 @@ export const Nav = styled.nav`
   background: var(--gray-0, #FFF);
   padding-top: 40px;
 
-  h2 {
+  .brand-name {
     margin-bottom: 56px;
+    color: var(--gray-400, #666);
+    font-size: 24px;
   }
 
   ul {

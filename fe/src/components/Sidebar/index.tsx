@@ -5,7 +5,7 @@ import { Nav } from './styles';
 export default function Sidebar() {
   return (
     <Nav>
-      <h2>WA</h2>
+      <p className='brand-name'><strong>W</strong>A</p>
 
       <ul>
         {icons.map((icon) => (

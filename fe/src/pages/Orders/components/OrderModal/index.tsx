@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 
-import { Order } from '../../../../types/Order';
 import { api } from '../../../../services/api';
+import { Order } from '../../../../types/Order';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
 
 import { formatCurrency } from '../../../../utils/formatCurrency';
 
-import { Footer, ModalBody, OrderContainerItem, OrderDetails, Overlay } from './styles';
+import Modal from '../../../../components/Modal';
+import { Footer, OrderContainerItem, OrderDetails } from './styles';
 
 interface OrderModalProps {
   visible: boolean;
@@ -68,74 +69,72 @@ export function OrderModal({
   const statusBoards = statusOrder[order.status];
 
   return (
-    <Overlay>
-      <ModalBody>
-        <header>
-          <strong>Mesa {order.table}</strong>
+    <Modal>
+      <header>
+        <strong>Mesa {order.table}</strong>
 
-          <button onClick={onClose}>
-            <img src={closeIcon} alt="close-icon" />
-          </button>
-        </header>
+        <button onClick={onClose}>
+          <img src={closeIcon} alt="close-icon" />
+        </button>
+      </header>
 
-        <div className="status-container">
-          <small>Status do Pedido</small>
+      <div className="status-container">
+        <small>Status do Pedido</small>
 
-          <figure>
-            <span>{statusBoards && statusBoards.icon}</span>
-            <strong>{statusBoards && statusBoards.name}</strong>
-          </figure>
+        <figure>
+          <span>{statusBoards && statusBoards.icon}</span>
+          <strong>{statusBoards && statusBoards.name}</strong>
+        </figure>
+      </div>
+
+      <OrderDetails>
+        <small>Itens</small>
+
+        <OrderContainerItem>
+          {order.products.map(({ _id, product, quantity }) => (
+            <figure className='item' key={_id}>
+              <img
+                src={`${api.defaults.baseURL}/uploads/${product.imagePath}`}
+                alt={product.name}
+              />
+              <span className='quantity'>{quantity}x</span>
+              <div className='product-details'>
+                <strong>{product.name}</strong>
+                <small>{formatCurrency(product.price)}</small>
+              </div>
+            </figure>
+          ))}
+        </OrderContainerItem>
+
+        <div className="total">
+          <p>Total</p>
+          <strong>{formatCurrency(total)}</strong>
         </div>
+      </OrderDetails>
 
-        <OrderDetails>
-          <small>Itens</small>
-
-          <OrderContainerItem>
-            {order.products.map(({ _id, product, quantity }) => (
-              <figure className='item' key={_id}>
-                <img
-                  src={`${api.defaults.baseURL}/uploads/${product.imagePath}`}
-                  alt={product.name}
-                />
-                <span className='quantity'>{quantity}x</span>
-                <div className='product-details'>
-                  <strong>{product.name}</strong>
-                  <small>{formatCurrency(product.price)}</small>
-                </div>
-              </figure>
-            ))}
-          </OrderContainerItem>
-
-          <div className="total">
-            <p>Total</p>
-            <strong>{formatCurrency(total)}</strong>
-          </div>
-        </OrderDetails>
-
-        <Footer isOrderDone={order.status === 'DONE'}>
-          <button
-            type='reset'
-            onClick={onCancelOrder}
-            disabled={isLoading}
-          >
+      <Footer isOrderDone={order.status === 'DONE'}>
+        <button
+          type='reset'
+          onClick={onCancelOrder}
+          disabled={isLoading}
+        >
             Cancelar Pedido
+        </button>
+        {order.status !== 'DONE' && (
+          <button
+            type='button'
+            disabled={isLoading}
+            onClick={onOrderStatusChange}
+          >
+            {order.status === 'WAITING' ?
+              <span>Iniciar produção</span>
+              : (
+                <span>Concluir pedido</span>
+              )
+            }
           </button>
-          {order.status !== 'DONE' && (
-            <button
-              type='button'
-              disabled={isLoading}
-              onClick={onOrderStatusChange}
-            >
-              {order.status === 'WAITING' ?
-                <span>Iniciar produção</span>
-                : (
-                  <span>Concluir pedido</span>
-                )
-              }
-            </button>
-          )}
-        </Footer>
-      </ModalBody>
-    </Overlay>
+        )}
+      </Footer>
+    </Modal>
   );
 }
