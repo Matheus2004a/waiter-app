@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface Props {
-  isOrderDone: boolean;
+  isOrderDone?: boolean;
 }
 
 export const OrderDetails = styled.section`

@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 import { Order } from '../../../../types/Order';
 import { OrderModal } from '../OrderModal';
 
-import { Board, OrdersContainer } from './styles';
 import { api } from '../../../../services/api';
+import { Board, OrdersContainer } from './styles';
 
 interface OrdersBoardProps {
   icon: string;
@@ -40,10 +40,9 @@ export function OrdersBoard({
     try {
       setIsLoading(true);
 
-      const status = selectedOrder?.status === 'WAITING'
-        ? 'IN_PRODUCTION' : 'DONE';
+      const status = selectedOrder?.status === 'WAITING' ? 'IN_PRODUCTION' : 'DONE';
 
-      await api.patch(`${api.defaults.baseURL}/orders/${selectedOrder?._id}`, { status });
+      await api.patch(`/orders/${selectedOrder?._id}`, { status });
       toast.success(`O pedido da Mesa ${selectedOrder?.table} teve o status alterado`);
       onOrderStatusChange(selectedOrder!._id, status);
     } catch (error) {
@@ -58,9 +57,10 @@ export function OrdersBoard({
   async function handleCancelOrder() {
     try {
       setIsLoading(true);
-      await api.delete(`${api.defaults.baseURL}/orders/${selectedOrder?._id}`);
+      await api.delete(`/orders/${selectedOrder?._id}`);
       toast.success(`O pedido da Mesa ${selectedOrder?.table} foi cancelado`);
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error.message);
       setIsLoading(false);
     }
 

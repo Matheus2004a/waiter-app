@@ -12,6 +12,19 @@ export const Container = styled.div`
   }
 `;
 
+export const ContentModal = styled.div`
+  font-weight: 500;
+  margin-top: 48px;
+
+  p {
+    text-align: center;
+  }
+
+  p:last-child {
+    margin-top: 16px;
+  }
+`;
+
 export const Header = styled.header`
   display: flex;
   justify-content: space-between;

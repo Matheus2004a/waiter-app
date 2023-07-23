@@ -69,7 +69,7 @@ export function OrderModal({
   const statusBoards = statusOrder[order.status];
 
   return (
-    <Modal>
+    <Modal isVisible={visible}>
       <header>
         <strong>Mesa {order.table}</strong>
 

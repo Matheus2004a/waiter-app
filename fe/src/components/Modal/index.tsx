@@ -4,9 +4,14 @@ import { ModalBody, Overlay } from './styles';
 
 interface ModalProps {
   children: JSX.Element | string | ReactNode;
+  isVisible: boolean;
 }
 
-export default function Modal({ children }: ModalProps) {
+export default function Modal({ children, isVisible }: ModalProps) {
+  if (!isVisible) {
+    return null;
+  }
+
   return (
     <Overlay>
       <ModalBody>
