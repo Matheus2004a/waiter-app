@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { UseFormSetError } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
+import useAuth from '../../hooks/useAuth';
 import { api } from '../../services/api';
 import { FormData } from '../../types/Login';
 
@@ -9,10 +10,16 @@ import infoError from '../../assets/images/info.svg';
 
 import { ErrorMessage } from './style';
 
+interface LoginDataProps {
+  token: string,
+}
+
 export default function useLogin(setError: UseFormSetError<FormData>) {
+  const [isLoading, setIsLoading] = useState(false);
   const [visiblePassword, setVisiblePassword] = useState('password');
 
   const navigate = useNavigate();
+  const { signin } = useAuth();
 
   function handleVisiblePassword() {
     setVisiblePassword((prevState) => prevState === 'password' ? 'text' : 'password');
@@ -20,9 +27,10 @@ export default function useLogin(setError: UseFormSetError<FormData>) {
 
   const submitLogin = useCallback(async (dataUser: FormData) => {
     try {
-      const { data } = await api.post('/login', dataUser);
+      setIsLoading(true);
+      const { data } = await api.post<LoginDataProps>('/login', dataUser);
 
-      localStorage.setItem('token', data.token);
+      signin(data.token);
       navigate('/orders');
     } catch (error: any) {
       if (error.code === 'ERR_NETWORK') {
@@ -36,6 +44,8 @@ export default function useLogin(setError: UseFormSetError<FormData>) {
       if (status === 401) {
         setError('password', { message: data.message });
       }
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -49,6 +59,7 @@ export default function useLogin(setError: UseFormSetError<FormData>) {
   }
 
   return {
+    isLoading,
     visiblePassword,
     handleVisiblePassword,
     submitLogin,

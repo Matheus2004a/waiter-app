@@ -46,6 +46,7 @@ export default function useOrders() {
   }
 
   return {
+    orders,
     waiting,
     inProduction,
     done,

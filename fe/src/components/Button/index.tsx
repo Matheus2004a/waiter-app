@@ -1,7 +1,7 @@
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   type: 'button' | 'submit' | 'reset';
-  children: string | JSX.Element;
-  isDisabled: boolean;
+  children: React.ReactNode;
+  isDisabled?: boolean;
 }
 
 export default function Button({ type, children, isDisabled }: ButtonProps) {

@@ -5,6 +5,7 @@ import { FormData } from '../../types/Login';
 import { schemaLogin } from '../../validations/schemaLogin';
 import useLogin from './useLogin';
 
+import { Spinner } from '../../components/Spinner';
 import { Container, Fieldset, Form, SectionWelcome, StyledButton } from './style';
 
 import eyeHidden from '../../assets/images/eye-hidden.svg';
@@ -21,7 +22,7 @@ export default function Login() {
   });
 
   const {
-    visiblePassword, handleVisiblePassword,
+    isLoading, visiblePassword, handleVisiblePassword,
     submitLogin, renderErrorMessage
   } = useLogin(setError);
 
@@ -72,9 +73,9 @@ export default function Login() {
 
         <StyledButton
           type='submit'
-          disabled={isDisabledButton}
+          disabled={isDisabledButton || isLoading}
         >
-          Fazer Login
+          {isLoading ? <Spinner /> : 'Fazer Login'}
         </StyledButton>
       </Form>
     </Container>

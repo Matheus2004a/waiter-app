@@ -3,12 +3,11 @@ import { useState } from 'react';
 import useOrders from './useOrders';
 
 import Modal from '../../components/Modal';
-import Sidebar from '../../components/Sidebar';
 import { icons } from '../../components/Sidebar/icons';
 import { Footer } from './components/OrderModal/styles';
 import { OrdersBoard } from './components/OrdersBoard';
 
-import { ButtonRefreshDay, Container, ContainerOrders, ContentModal, Header } from './styles';
+import { ButtonRefreshDay, ContainerOrders, ContentModal, Header } from './styles';
 
 import closeIcon from '../../assets/images/close-icon.svg';
 import refresh from '../../assets/images/refresh.svg';
@@ -22,7 +21,7 @@ export function Orders() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
-    <Container>
+    <>
       <Modal isVisible={isModalVisible}>
         <header>
           <figure>
@@ -52,8 +51,6 @@ export function Orders() {
           <button type='button'>Sim, reiniciar o dia</button>
         </Footer>
       </Modal>
-
-      <Sidebar />
 
       <main>
         <Header>
@@ -98,6 +95,6 @@ export function Orders() {
           />
         </ContainerOrders>
       </main>
-    </Container>
+    </>
   );
 }

@@ -3,13 +3,16 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Router from './routes';
 
+import AuthProvider from './contexts/AuthContext';
 import { GlobalStyles } from './styles/GlobalStyles';
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <Router />
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
       <ToastContainer position='bottom-center' />
     </>
   );

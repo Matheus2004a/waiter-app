@@ -57,6 +57,7 @@ export const GlobalStyles = createGlobalStyle`
     cursor: pointer;
     font-size: 1rem;
     color: #333;
+    background: transparent;
   }
 
   button, fieldset {
@@ -65,5 +66,9 @@ export const GlobalStyles = createGlobalStyle`
 
   ul {
     list-style: none;
+  }
+
+  a {
+    text-decoration: none;
   }
 `;

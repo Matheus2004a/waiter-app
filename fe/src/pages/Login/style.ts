@@ -1,5 +1,5 @@
 import { FieldError } from 'react-hook-form';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 interface InvalidFields {
   isInvalid: FieldError | undefined;
@@ -81,6 +81,8 @@ export const ErrorMessage = styled.div`
 `;
 
 export const StyledButton = styled.button`
+  display: flex;
+  justify-content: center;
   border-radius: 44px;
   padding: 14px 28px;
   color: var(--gray-0, #FFF);

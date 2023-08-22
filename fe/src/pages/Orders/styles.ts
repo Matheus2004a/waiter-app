@@ -1,17 +1,5 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 32px;
-
-  figure {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-`;
-
 export const ContentModal = styled.div`
   font-weight: 500;
   margin-top: 48px;
