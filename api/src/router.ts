@@ -3,17 +3,19 @@ import path from 'node:path';
 import { Router } from 'express';
 import multer from 'multer';
 
-import { listCategories } from './app/useCases/category/listCategories';
 import { createCategory } from './app/useCases/category/createCategory';
-import { updateCategory } from './app/useCases/category/updateCategory';
-import { listProducts } from './app/useCases/products/listProducts';
-import { createProduct } from './app/useCases/products/createProduct';
+import { listCategories } from './app/useCases/category/listCategories';
 import { listProductsByCategory } from './app/useCases/category/listProductsByCategory';
-import { listOrders } from './app/useCases/orders/listOrders';
-import { createOrder } from './app/useCases/orders/createOrder';
-import { changeOrderStatus } from './app/useCases/orders/changeOrderStatus';
+import { updateCategory } from './app/useCases/category/updateCategory';
 import { cancelOrder } from './app/useCases/orders/cancelOrder';
+import { changeOrderStatus } from './app/useCases/orders/changeOrderStatus';
+import { createOrder } from './app/useCases/orders/createOrder';
+import { listOrders } from './app/useCases/orders/listOrders';
+import { createProduct } from './app/useCases/products/createProduct';
+import { listProducts } from './app/useCases/products/listProducts';
 import { createUser } from './app/useCases/users/createUser';
+import { listAll, listById } from './app/useCases/users/listUser';
+import { deleteUser } from './app/useCases/users/deleteUser';
 import { loginUser } from './app/useCases/users/loginUser';
 
 export const router = Router();
@@ -43,5 +45,8 @@ router.post('/orders', createOrder);
 router.patch('/orders/:orderId', changeOrderStatus);
 router.delete('/orders/:orderId', cancelOrder);
 
+router.get('/user', listAll);
+router.get('/user/:id', listById);
 router.post('/user', createUser);
 router.post('/login', loginUser);
+router.delete('/user/:id', deleteUser);
