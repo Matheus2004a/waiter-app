@@ -1,9 +1,7 @@
-import { ReactNode } from 'react';
-
 import { ModalBody, Overlay } from './styles';
 
 interface ModalProps {
-  children: JSX.Element | string | ReactNode;
+  children: React.ReactNode;
   isVisible: boolean;
 }
 

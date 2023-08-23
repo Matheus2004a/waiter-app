@@ -3,3 +3,8 @@ export interface Category {
   name: string,
   icon: string,
 }
+
+export interface FormDataCategory {
+  icon: string;
+  name: string;
+}

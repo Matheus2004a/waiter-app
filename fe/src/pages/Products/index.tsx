@@ -9,7 +9,7 @@ import { Flex, Header } from '../History/styles';
 import { MenuItem, Nav } from './styles';
 
 import menu from '../../assets/images/menu.svg';
-import TableCategories from '../../components/Table/TableCategories';
+import TableCategories from '../../components/Table/components/TableCategories';
 import CategoriesServices from '../../services/CategoriesServices';
 
 export default function Products() {
