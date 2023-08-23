@@ -1,10 +1,8 @@
 import { api } from './api';
 
-import { Product } from '../types/Product';
-
 class ProductServices {
   async listAll() {
-    const { data } = await api.get<Product[]>('/products');
+    const { data } = await api.get('/products');
 
     return data;
   }
