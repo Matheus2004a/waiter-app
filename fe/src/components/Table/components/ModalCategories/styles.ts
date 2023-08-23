@@ -20,6 +20,11 @@ export const Form = styled.form`
     font-weight: 600;
     padding: 14px 28px;
     border-radius: 44px;
+
+    &:disabled {
+      background: var(--gray-200, #CCC);
+      cursor: not-allowed;
+    }
   }
 `;
 

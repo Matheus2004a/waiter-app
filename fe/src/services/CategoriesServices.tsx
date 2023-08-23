@@ -14,6 +14,12 @@ class CategoriesServices {
 
     return data;
   }
+
+  async delete(categoryId: string) {
+    const { data } = await api.delete(`/categories/${categoryId}`);
+
+    return data;
+  }
 }
 
 export default new CategoriesServices();
