@@ -8,6 +8,7 @@ import Users from './pages/Users';
 
 import { DashboardLayout } from './layouts/DashboardLayout';
 
+import AdminRoutes from './AdminRoutes';
 import PrivateRoutes from './PrivateRoutes';
 
 export default function Router() {
@@ -15,12 +16,14 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<SplashScreen />} />
-        <Route element={<PrivateRoutes />}>
-          <Route element={<DashboardLayout />}>
+        <Route element={<DashboardLayout />}>
+          <Route element={<PrivateRoutes />}>
             <Route path='/orders' element={<Orders />} />
             <Route path='/history' element={<History />} />
-            <Route path='/users' element={<Users />} />
             <Route path='/menu' element={<Products />} />
+          </Route>
+          <Route element={<AdminRoutes />}>
+            <Route path='/users' element={<Users />} />
           </Route>
         </Route>
       </Routes>

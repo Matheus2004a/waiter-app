@@ -38,7 +38,6 @@ export const Fieldset = styled.fieldset<FieldsetProps>`
     max-width: 100%;
     padding: 1rem;
     border-radius: 8px;
-    margin-top: 8px;
     outline: none;
     font-size: 14px;
     border: 1px solid var(--gray-200, #CCC);
@@ -47,5 +46,17 @@ export const Fieldset = styled.fieldset<FieldsetProps>`
 
   span {
     color: var(--brand-red, #D73035);
+  }
+`;
+
+export const RadioGroup = styled.div`
+  margin-top: 8px;
+
+  label + label {
+    margin-left: 32px;
+  }
+
+  input {
+    margin-right: 8px;
   }
 `;

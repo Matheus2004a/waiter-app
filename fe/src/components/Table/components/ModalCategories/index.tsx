@@ -1,9 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import CategoriesServices from '../../../../services/CategoriesServices';
 import { FormDataCategory } from '../../../../types/Categories';
+import { ModalProps } from '../../../../types/Modal';
 import { schemaCategories } from '../../../../validations/schemaCategories';
 
 import Button from '../../../Button';
@@ -11,9 +13,8 @@ import Modal from '../../../Modal';
 import { Spinner } from '../../../Spinner';
 
 import { Flex } from '../../../../pages/History/styles';
-import { Fieldset, Form } from './styles';
+import { Fieldset, Form } from '../../../Form/styles';
 
-import { toast } from 'react-toastify';
 import closeIcon from '../../../../assets/images/close-icon.svg';
 
 async function createCategory(data: FormDataCategory) {
@@ -22,12 +23,7 @@ async function createCategory(data: FormDataCategory) {
   return newCategory;
 }
 
-interface ModalCategoriesProps {
-  isModalVisible: boolean;
-  onModalVisible: () => void;
-}
-
-export function ModalCategories({ isModalVisible, onModalVisible }: ModalCategoriesProps) {
+export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) {
   const {
     register,
     handleSubmit,
@@ -95,7 +91,10 @@ export function ModalCategories({ isModalVisible, onModalVisible }: ModalCategor
         </Fieldset>
 
         <Flex style={{ justifyContent: 'flex-end', margin: 0 }}>
-          <Button type='submit' isDisabled={isDisableButton || createCategoryMutation.isLoading}>
+          <Button
+            type='submit'
+            isDisabled={isDisableButton || createCategoryMutation.isLoading}
+          >
             {createCategoryMutation.isLoading ? <Spinner /> : 'Salvar Alterações'}
           </Button>
         </Flex>

@@ -28,8 +28,10 @@ export function History() {
       </Header>
 
       <Flex>
-        <h3>Pedidos</h3>
-        <strong>{orders.length}</strong>
+        <div>
+          <h3>Pedidos</h3>
+          <strong>{orders.length}</strong>
+        </div>
       </Flex>
 
       <TableCustom>

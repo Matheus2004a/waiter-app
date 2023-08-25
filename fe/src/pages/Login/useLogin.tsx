@@ -11,7 +11,8 @@ import infoError from '../../assets/images/info.svg';
 import { ErrorMessage } from './style';
 
 interface LoginDataProps {
-  token: string,
+  token: string;
+  isAdmin: boolean;
 }
 
 export default function useLogin(setError: UseFormSetError<FormData>) {
@@ -19,7 +20,7 @@ export default function useLogin(setError: UseFormSetError<FormData>) {
   const [visiblePassword, setVisiblePassword] = useState('password');
 
   const navigate = useNavigate();
-  const { signin } = useAuth();
+  const { signin, handleUserAdmin } = useAuth();
 
   function handleVisiblePassword() {
     setVisiblePassword((prevState) => prevState === 'password' ? 'text' : 'password');
@@ -29,6 +30,8 @@ export default function useLogin(setError: UseFormSetError<FormData>) {
     try {
       setIsLoading(true);
       const { data } = await api.post<LoginDataProps>('/login', dataUser);
+
+      handleUserAdmin(data.isAdmin);
 
       signin(data.token);
       navigate('/orders');

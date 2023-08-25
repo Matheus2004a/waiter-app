@@ -8,8 +8,10 @@ interface AuthProps {
 
 interface AuthContextProps {
   isAuthenticated: boolean,
+  isAdmin: boolean,
   signin: (token: string) => void,
   signout: () => void,
+  handleUserAdmin: (isAdmin: boolean) => void,
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
@@ -21,6 +23,8 @@ export default function AuthProvider({ children }: AuthProps) {
     return !!userIsLogged;
   });
 
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const signin = useCallback((token: string) => {
     localStorage.setItem(localStorageKeys.token, token);
     setIsAuthenticated(true);
@@ -31,9 +35,15 @@ export default function AuthProvider({ children }: AuthProps) {
     setIsAuthenticated(false);
   }, []);
 
+  function handleUserAdmin(isAdmin: boolean) {
+    setIsAdmin(isAdmin);
+  }
+
   return (
     <AuthContext.Provider value={{
       isAuthenticated,
+      isAdmin,
+      handleUserAdmin,
       signin,
       signout,
     }}>
