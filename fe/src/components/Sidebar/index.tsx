@@ -1,32 +1,31 @@
-import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
-import { icons } from './icons';
 import logout from '../../assets/images/log-off.svg';
+import { icons } from './icons';
 
+import { useMemo } from 'react';
+import { IconsBar } from './components/IconsBar';
 import { Nav } from './styles';
 
 export default function Sidebar() {
-  const navigate = useNavigate();
+  const { isAdmin, signout } = useAuth();
 
-  const { signout } = useAuth();
+  const newIconsToWaiter = useMemo(() => {
+    return [
+      ...icons.slice(0, 3),
+      ...icons.slice(3 + 1)
+    ];
+  }, [isAdmin]);
 
   return (
     <Nav>
       <p className='brand-name'><strong>W</strong>A</p>
 
       <ul>
-        {icons.map((icon) => (
-          <button
-            onClick={() => navigate(icon.href)}
-            key={icon.title}
-          >
-            <li>
-              <img src={icon.path} alt={icon.title} />
-              {icon.title}
-            </li>
-          </button>
-        ))}
+        {isAdmin
+          ? <IconsBar icons={icons} />
+          : <IconsBar icons={newIconsToWaiter} />
+        }
 
         <button onClick={signout}>
           <li>
