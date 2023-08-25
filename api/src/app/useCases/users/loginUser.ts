@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { Users } from '../../models/Users';
@@ -31,6 +31,7 @@ export async function loginUser(req: Request, res: Response) {
 
     res.status(202).send({
       message: 'Usuário autenticado com sucesso',
+      isAdmin: user.role === 'Admin',
       token
     });
   } catch (error: any) {

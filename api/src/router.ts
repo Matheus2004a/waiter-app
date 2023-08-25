@@ -47,8 +47,8 @@ router.post('/orders', createOrder);
 router.patch('/orders/:orderId', changeOrderStatus);
 router.delete('/orders/:orderId', cancelOrder);
 
-router.get('/user', listAll);
-router.get('/user/:id', listById);
-router.post('/user', createUser);
+router.get('/users', listAll);
+router.get('/users/:id', listById);
+router.post('/users', createUser);
 router.post('/login', loginUser);
-router.delete('/user/:id', deleteUser);
+router.delete('/users/:id', deleteUser);
