@@ -50,6 +50,8 @@ export const Fieldset = styled.fieldset<FieldsetProps>`
 `;
 
 export const RadioGroup = styled.div`
+  display: flex;
+  gap: 32px;
   margin-top: 8px;
 
   label + label {
@@ -58,5 +60,10 @@ export const RadioGroup = styled.div`
 
   input {
     margin-right: 8px;
+    accent-color: var(--brand-red, #D73035);
+  }
+
+  input:checked + label {
+    color: var(--brand-red, #D73035);
   }
 `;

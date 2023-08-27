@@ -13,7 +13,6 @@ import Modal from '../../../../components/Modal';
 import { Spinner } from '../../../../components/Spinner';
 
 import { Fieldset, Form, RadioGroup } from '../../../../components/Form/styles';
-import { Flex } from '../../../History/styles';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
 
@@ -96,40 +95,37 @@ export function ModalRegister({ isModalVisible, onModalVisible }: ModalProps) {
         <Fieldset isInvalid={errors.role}>
           <legend>Tipo</legend>
 
-          <Flex style={{ justifyContent: 'flex-start', gap: '32px' }}>
-            <RadioGroup>
-              <label htmlFor="admin">
-                <input
-                  type="radio"
-                  id="admin"
-                  value="Admin"
-                  {...register('role')}
-                />
-                Admin
-              </label>
+          <RadioGroup>
+            <div>
+              <input
+                type="radio"
+                id="admin"
+                value="Admin"
+                {...register('role')}
+              />
+              <label htmlFor="admin">Admin</label>
+            </div>
 
-              <label htmlFor="waiter">
-                <input
-                  type="radio"
-                  id="waiter"
-                  value="Garçom"
-                  {...register('role')}
-                />
-                Garçom
-              </label>
-            </RadioGroup>
-          </Flex>
+            <div>
+              <input
+                type="radio"
+                id="waiter"
+                value="Garçom"
+                {...register('role')}
+              />
+              <label htmlFor="waiter">Garçom</label>
+            </div>
+          </RadioGroup>
           {errors.role && <span>{errors.role.message}</span>}
         </Fieldset>
 
-        <Flex style={{ margin: 0 }}>
-          <Button
-            type='submit'
-            isDisabled={isDisableButton || createUserMutation.isLoading}
-          >
-            {createUserMutation.isLoading ? <Spinner /> : 'Cadastrar usuário'}
-          </Button>
-        </Flex>
+        <Button
+          type='submit'
+          isDisabled={isDisableButton || createUserMutation.isLoading}
+          hasChildren
+        >
+          {createUserMutation.isLoading ? <Spinner /> : 'Cadastrar usuário'}
+        </Button>
       </Form>
     </Modal>
   );

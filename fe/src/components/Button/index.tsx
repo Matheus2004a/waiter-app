@@ -1,16 +1,20 @@
+import { StyleButton } from './styles';
+
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   type: 'button' | 'submit' | 'reset';
   children: React.ReactNode;
   isDisabled?: boolean;
+  hasChildren?: boolean;
 }
 
-export default function Button({ type, children, isDisabled }: ButtonProps) {
+export default function Button({ type, children, isDisabled, hasChildren }: ButtonProps) {
   return (
-    <button
+    <StyleButton
       type={type}
       disabled={isDisabled}
+      hasChildren={hasChildren}
     >
       {children}
-    </button>
+    </StyleButton>
   );
 }
