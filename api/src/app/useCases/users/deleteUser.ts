@@ -6,9 +6,7 @@ export async function deleteUser(req: Request, res: Response) {
   try {
     const { id } = req.params;
 
-    const user = await Users.findByIdAndDelete({
-      _id: id
-    });
+    const user = await Users.findByIdAndDelete(id);
 
     if (!user) {
       return res.status(404).send({ message: 'Usuário não encontrado' });
