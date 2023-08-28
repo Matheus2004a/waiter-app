@@ -13,6 +13,8 @@ export const Overlay = styled.div`
 `;
 
 export const ModalBody = styled.div`
+  display: grid;
+  gap: 32px;
   width: 480px;
   background: #fff;
   padding: 32px;

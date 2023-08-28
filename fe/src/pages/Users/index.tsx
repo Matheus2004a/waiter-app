@@ -4,7 +4,6 @@ import UserServices from '../../services/UserServices';
 
 import { Flex, Header } from '../History/styles';
 
-import Button from '../../components/Button';
 import { TableUsers } from '../../components/Table/components/TableUsers';
 
 import users from '../../assets/images/users.svg';
@@ -14,14 +13,13 @@ export default function Users() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleModalVisible = useCallback(() => {
-    setIsModalVisible((prevState) => !prevState ? true : false);
+    setIsModalVisible((prevState) => !prevState);
   }, []);
 
   const { data } = useQuery({
     queryKey: ['users'],
     queryFn: UserServices.listAll
   });
-
 
   return (
     <>

@@ -14,6 +14,12 @@ class UserServices {
 
     return data;
   }
+
+  async delete(_id: string) {
+    const { data } = await api.delete(`/users/${_id}`);
+
+    return data;
+  }
 }
 
 export default new UserServices();

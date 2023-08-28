@@ -6,5 +6,5 @@ export const schemaRegister = z.object({
   password: z.string()
     .nonempty('Senha é obrigatória')
     .min(8, 'A senha deve ter no mínimo 8 caracteres'),
-  role: z.string().nonempty('Tipo do usuário é obrigatório'),
+  role: z.string({ invalid_type_error: 'Selecione um tipo de usuário' })
 });

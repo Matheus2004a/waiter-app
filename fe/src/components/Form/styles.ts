@@ -2,13 +2,12 @@ import { FieldError } from 'react-hook-form';
 import styled from 'styled-components';
 
 interface FieldsetProps {
-  isInvalid: FieldError | undefined;
+  isInvalid?: FieldError | undefined;
 }
 
 export const Form = styled.form`
   display: grid;
   gap: 32px;
-  margin-top: 48px;
 
   fieldset {
     display: grid;
