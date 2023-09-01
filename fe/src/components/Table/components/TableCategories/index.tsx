@@ -9,6 +9,7 @@ import { TableCustom, TdFlex, Thead } from '../../styles';
 
 import edit from '../../../../assets/images/edit.svg';
 import trash from '../../../../assets/images/trash.svg';
+import { ModalEditCategory } from '../ModalEditCategory';
 
 interface TableCategoriesProps {
   data: Category[];
@@ -21,17 +22,37 @@ export default function TableCategories({ data, isVisible, isLoading }: TableCat
 
   if (isLoading) return <Spinner />;
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState({
+    newCategory: false,
+    editCategory: false,
+  });
 
-  const handleModalVisible = useCallback(() => {
-    setIsModalVisible((prevState) => !prevState ? true : false);
+  const [categorySelected, setCategorySelected] = useState({} as Category);
+
+  const handleModalVisible = useCallback((key: string, value: boolean) => {
+    setIsModalVisible((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   }, []);
+
+  function handleEditItem(item: Category) {
+    handleModalVisible('editCategory', !isModalVisible.editCategory);
+
+    setCategorySelected(item);
+  }
 
   return (
     <>
       <ModalCategories
-        isModalVisible={isModalVisible}
+        isModalVisible={isModalVisible.newCategory}
         onModalVisible={handleModalVisible}
+      />
+
+      <ModalEditCategory
+        isModalVisible={isModalVisible.editCategory}
+        onModalVisible={handleModalVisible}
+        item={categorySelected}
       />
 
       <Flex>
@@ -40,7 +61,7 @@ export default function TableCategories({ data, isVisible, isLoading }: TableCat
           <strong>{data.length}</strong>
         </div>
 
-        <button onClick={handleModalVisible}>
+        <button onClick={() => handleModalVisible('newCategory', !isModalVisible.newCategory)}>
           Nova categoria
         </button>
       </Flex>
@@ -61,7 +82,7 @@ export default function TableCategories({ data, isVisible, isLoading }: TableCat
               </td>
               <td>{item.name}</td>
               <TdFlex>
-                <button>
+                <button onClick={() => handleEditItem(item)}>
                   <img src={edit} alt="icon-edit" />
                 </button>
                 <button>

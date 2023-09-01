@@ -1,4 +1,4 @@
 export interface ModalProps {
   isModalVisible: boolean;
-  onModalVisible: () => void;
+  onModalVisible: (key?: string, value?: boolean) => void;
 }

@@ -6,4 +6,9 @@ export const StyleButton = styled.button<{ hasChildren?: boolean }>`
     justify-content: center;
     align-items: center;
   `}
+
+  &[type="reset"] {
+    background: transparent;
+    color: var(--brand-red, #D73035);
+  }
 `;

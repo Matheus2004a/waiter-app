@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import CategoriesServices from '../../../../services/CategoriesServices';
-import { FormDataCategory } from '../../../../types/Categories';
+import { Category, FormDataCategory } from '../../../../types/Categories';
 import { ModalProps } from '../../../../types/Modal';
 import { schemaCategories } from '../../../../validations/schemaCategories';
 
@@ -17,24 +17,34 @@ import { Fieldset, Form } from '../../../Form/styles';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
 
-async function createCategory(data: FormDataCategory) {
-  const newCategory = await CategoriesServices.create(data);
+type EditCategoryProps = ModalProps & {
+  item: Category
+};
+
+async function updateCategory(data: FormDataCategory) {
+  const newCategory = await CategoriesServices.update(data);
 
   return newCategory;
 }
 
-export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) {
+export function ModalEditCategory({ isModalVisible, onModalVisible, item }: EditCategoryProps) {
+  if (!isModalVisible) return null;
+
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<FormDataCategory>({
-    resolver: zodResolver(schemaCategories)
+    defaultValues: {
+      icon: item.icon,
+      name: item.name
+    },
+    resolver: zodResolver(schemaCategories),
   });
 
   const queryClient = useQueryClient();
 
-  const createCategoryMutation = useMutation(createCategory, {
+  const updateCategoryMutation = useMutation(updateCategory, {
     onSuccess: () => {
       queryClient.invalidateQueries('categories');
     }
@@ -42,10 +52,9 @@ export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) 
 
   async function onSubmit(data: FormDataCategory) {
     try {
-      // Executar a mutação passando os dados necessários
-      const newCategory = await createCategoryMutation.mutateAsync(data);
+      const category = await updateCategoryMutation.mutateAsync(data);
 
-      toast.success(newCategory.message);
+      toast.success(category.message);
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -56,9 +65,9 @@ export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) 
   return (
     <Modal isVisible={isModalVisible}>
       <header>
-        <h2>Nova Categoria</h2>
+        <h2>Editar Categoria</h2>
 
-        <button onClick={() => onModalVisible('newCategory', !isModalVisible)}>
+        <button onClick={() => onModalVisible('editCategory', !isModalVisible)}>
           <img src={closeIcon} alt="icon-close" />
         </button>
       </header>
@@ -72,9 +81,7 @@ export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) 
             placeholder='Ex: 🧀'
             {...register('icon')}
           />
-          {errors.icon &&
-            <span>{errors.icon.message}</span>
-          }
+          {errors.icon && <span>{errors.icon.message}</span>}
         </Fieldset>
 
         <Fieldset isInvalid={errors.name}>
@@ -85,17 +92,21 @@ export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) 
             placeholder='Ex: Lanches'
             {...register('name')}
           />
-          {errors.name &&
-            <span>{errors.name.message}</span>
-          }
+          {errors.name && <span>{errors.name.message}</span>}
         </Fieldset>
 
         <Flex style={{ justifyContent: 'flex-end', margin: 0 }}>
           <Button
-            type='submit'
-            isDisabled={isDisableButton || createCategoryMutation.isLoading}
+            type='reset'
+            isDisabled={isDisableButton || updateCategoryMutation.isLoading}
           >
-            {createCategoryMutation.isLoading ? <Spinner /> : 'Salvar Alterações'}
+            Excluir Categoria
+          </Button>
+          <Button
+            type='submit'
+            isDisabled={isDisableButton || updateCategoryMutation.isLoading}
+          >
+            {updateCategoryMutation.isLoading ? <Spinner /> : 'Salvar Alterações'}
           </Button>
         </Flex>
       </Form>

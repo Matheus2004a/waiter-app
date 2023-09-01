@@ -15,6 +15,12 @@ class CategoriesServices {
     return data;
   }
 
+  async update(dataCategory: FormDataCategory) {
+    const { data } = await api.put('/categories', dataCategory);
+
+    return data;
+  }
+
   async delete(categoryId: string) {
     const { data } = await api.delete(`/categories/${categoryId}`);
 
