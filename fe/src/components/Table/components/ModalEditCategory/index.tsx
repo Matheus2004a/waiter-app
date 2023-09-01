@@ -21,7 +21,7 @@ type EditCategoryProps = ModalProps & {
   item: Category
 };
 
-async function updateCategory(data: FormDataCategory) {
+async function updateCategory(data: Category) {
   const newCategory = await CategoriesServices.update(data);
 
   return newCategory;
@@ -44,20 +44,22 @@ export function ModalEditCategory({ isModalVisible, onModalVisible, item }: Edit
 
   const queryClient = useQueryClient();
 
-  const updateCategoryMutation = useMutation(updateCategory, {
-    onSuccess: () => {
+  const { mutate, isLoading } = useMutation(updateCategory, {
+    onSuccess: (data) => {
+      toast.success(data.message || 'Categoria atualizada com sucesso');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries('categories');
     }
   });
 
-  async function onSubmit(data: FormDataCategory) {
-    try {
-      const category = await updateCategoryMutation.mutateAsync(data);
+  function onSubmit(data: FormDataCategory) {
+    const newCategory = { ...data, _id: item._id };
 
-      toast.success(category.message);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
+    mutate(newCategory);
   }
 
   const isDisableButton = Object.values(errors).length > 0;
@@ -96,17 +98,12 @@ export function ModalEditCategory({ isModalVisible, onModalVisible, item }: Edit
         </Fieldset>
 
         <Flex style={{ justifyContent: 'flex-end', margin: 0 }}>
-          <Button
-            type='reset'
-            isDisabled={isDisableButton || updateCategoryMutation.isLoading}
-          >
-            Excluir Categoria
-          </Button>
+          <Button type='reset'>Excluir Categoria</Button>
           <Button
             type='submit'
-            isDisabled={isDisableButton || updateCategoryMutation.isLoading}
+            isDisabled={isDisableButton || isLoading}
           >
-            {updateCategoryMutation.isLoading ? <Spinner /> : 'Salvar Alterações'}
+            {isLoading ? <Spinner /> : 'Salvar Alterações'}
           </Button>
         </Flex>
       </Form>

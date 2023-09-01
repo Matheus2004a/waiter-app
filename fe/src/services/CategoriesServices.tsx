@@ -1,6 +1,6 @@
 import { api } from './api';
 
-import { FormDataCategory } from '../types/Categories';
+import { Category, FormDataCategory } from '../types/Categories';
 
 class CategoriesServices {
   async listAll() {
@@ -15,8 +15,8 @@ class CategoriesServices {
     return data;
   }
 
-  async update(dataCategory: FormDataCategory) {
-    const { data } = await api.put('/categories', dataCategory);
+  async update({ _id, icon, name }: Category) {
+    const { data } = await api.put(`/categories/${_id}`, { icon, name });
 
     return data;
   }
