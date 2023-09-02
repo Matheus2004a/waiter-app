@@ -15,6 +15,12 @@ class UserServices {
     return data;
   }
 
+  async update({ _id, name, email, password, role }: Users) {
+    const { data } = await api.patch(`/users/${_id}`, { name, email, password, role });
+
+    return data;
+  }
+
   async delete(_id: string) {
     const { data } = await api.delete(`/users/${_id}`);
 

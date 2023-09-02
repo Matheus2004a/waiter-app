@@ -30,7 +30,9 @@ export function TableUsers({ data, isModalVisible, onModalVisible }: TableUsersP
             <td>{item.email}</td>
             <td>{item.role}</td>
             <TdFlex>
-              <Button>
+              <Button
+                onClick={() => onModalVisible('updateUser', !isModalVisible, item)}
+              >
                 <img src={edit} alt="icon-edit" />
               </Button>
               <Button

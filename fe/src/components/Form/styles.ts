@@ -77,8 +77,8 @@ export const Content = styled.div`
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.10);
 `;
 
-export const Footer = styled.footer`
+export const Footer = styled.footer<{ isCenter?: boolean }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ isCenter }) => isCenter ? 'space-between' : 'flex-end'};
   align-items: center;
 `;

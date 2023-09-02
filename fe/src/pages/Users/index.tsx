@@ -12,10 +12,12 @@ import { Flex, Header } from '../History/styles';
 
 import users from '../../assets/images/users.svg';
 import Button from '../../components/Button';
+import { ModalEdit } from './components/ModalEdit';
 
 export default function Users() {
   const [isModalVisible, setIsModalVisible] = useState({
     newUser: false,
+    updateUser: false,
     deleteUser: false,
   });
 
@@ -39,6 +41,12 @@ export default function Users() {
     <>
       <ModalRegister
         isModalVisible={isModalVisible.newUser}
+        onModalVisible={handleModalVisible}
+      />
+
+      <ModalEdit
+        data={userSelected}
+        isModalVisible={isModalVisible.updateUser}
         onModalVisible={handleModalVisible}
       />
 
