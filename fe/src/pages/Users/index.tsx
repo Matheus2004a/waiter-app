@@ -1,19 +1,33 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
+
 import UserServices from '../../services/UserServices';
+import { Users as UsersType } from '../../types/Users';
+
+import { TableUsers } from '../../components/Table/components/TableUsers';
+import { ModalDelete } from './components/ModalDelete';
+import { ModalRegister } from './components/ModalRegister';
 
 import { Flex, Header } from '../History/styles';
 
-import { TableUsers } from '../../components/Table/components/TableUsers';
-
 import users from '../../assets/images/users.svg';
-import { ModalRegister } from './components/ModalRegister';
+import Button from '../../components/Button';
 
 export default function Users() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState({
+    newUser: false,
+    deleteUser: false,
+  });
 
-  const handleModalVisible = useCallback(() => {
-    setIsModalVisible((prevState) => !prevState);
+  const [userSelected, setUserSelected] = useState({} as UsersType);
+
+  const handleModalVisible = useCallback((key: string, value: boolean, item?: UsersType) => {
+    setIsModalVisible((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+
+    if (item) setUserSelected(item);
   }, []);
 
   const { data } = useQuery({
@@ -24,7 +38,13 @@ export default function Users() {
   return (
     <>
       <ModalRegister
-        isModalVisible={isModalVisible}
+        isModalVisible={isModalVisible.newUser}
+        onModalVisible={handleModalVisible}
+      />
+
+      <ModalDelete
+        data={userSelected}
+        isModalVisible={isModalVisible.deleteUser}
         onModalVisible={handleModalVisible}
       />
 
@@ -48,10 +68,19 @@ export default function Users() {
             <strong>{data?.length}</strong>
           </div>
 
-          <button onClick={handleModalVisible}>Novo usuário</button>
+          <Button
+            type='button'
+            onClick={() => handleModalVisible('newUser', !isModalVisible.newUser)}
+          >
+            Novo usuário
+          </Button>
         </Flex>
 
-        <TableUsers data={data} />
+        <TableUsers
+          data={data}
+          isModalVisible={isModalVisible.deleteUser}
+          onModalVisible={handleModalVisible}
+        />
       </main>
     </>
   );

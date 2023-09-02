@@ -3,8 +3,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import UserServices from '../../../../services/UserServices';
-import { ModalProps } from '../../../../types/Modal';
-import { Users } from '../../../../types/Users';
+import { TableUsersProps, Users } from '../../../../types/Users';
 
 import Button from '../../../../components/Button';
 import Modal from '../../../../components/Modal';
@@ -13,52 +12,52 @@ import { Fieldset, Form } from '../../../../components/Form/styles';
 import { Footer, Paragraph } from './styles';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
+import { Spinner } from '../../../../components/Spinner';
 
-async function createUser({ _id }: Users) {
-  const newCategory = await UserServices.delete(_id);
+async function deleteUser({ _id }: Users) {
+  const userDeleted = await UserServices.delete(_id);
 
-  return newCategory;
+  return userDeleted;
 }
 
-export function ModalDelete({ isModalVisible, onModalVisible }: ModalProps) {
+export function ModalDelete({ data, isModalVisible, onModalVisible }: TableUsersProps) {
+  if (!isModalVisible) return null;
+
   const { register, handleSubmit } = useForm<Users>({
     defaultValues: {
-      name: 'Fulano de Tal',
-      email: 'fulano@gmail.com'
+      name: data.name,
+      email: data.email
     }
   });
 
   const queryClient = useQueryClient();
 
-  const deleteUserMutation = useMutation(createUser, {
-    onSuccess: () => {
+  const { mutate, isLoading } = useMutation(deleteUser, {
+    onSuccess: (data) => {
+      toast.success(data.message);
+      onModalVisible('deleteUser', !isModalVisible);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries('users');
     }
   });
-
-  async function onSubmit(data: Users) {
-    try {
-      const deletedUser = await deleteUserMutation.mutateAsync(data);
-
-      toast.success(deletedUser.message);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-  }
 
   return (
     <Modal isVisible={isModalVisible}>
       <header>
         <h2>Excluir Usuário</h2>
 
-        <button onClick={onModalVisible}>
+        <Button onClick={() => onModalVisible('deleteUser', !isModalVisible)}>
           <img src={closeIcon} alt="icon-close" />
-        </button>
+        </Button>
       </header>
 
       <Paragraph>Tem certeza que deseja excluir o usuário?</Paragraph>
 
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(() => mutate(data))}>
         <Fieldset>
           <label htmlFor="name">Nome</label>
           <input
@@ -80,13 +79,15 @@ export function ModalDelete({ isModalVisible, onModalVisible }: ModalProps) {
         </Fieldset>
 
         <Footer>
-          <button
+          <Button
             type='button'
-            onClick={onModalVisible}
+            onClick={() => onModalVisible('deleteUser', !isModalVisible)}
           >
             Manter Usuário
-          </button>
-          <Button type='submit'>Excluir Usuário</Button>
+          </Button>
+          <Button type='submit' isDisabled={isLoading}>
+            {isLoading ? <Spinner /> : 'Excluir Usuário'}
+          </Button>
         </Footer>
       </Form>
     </Modal>

@@ -1,15 +1,18 @@
+import { Users } from '../../../../types/Users';
+
+import Button from '../../../Button';
 
 import { TableCustom, TdFlex, Thead } from '../../styles';
 
 import edit from '../../../../assets/images/edit.svg';
 import trash from '../../../../assets/images/trash.svg';
-import { Users } from '../../../../types/Users';
+import { ModalProps } from '../../../../types/Modal';
 
-interface TableUsersProps {
+type TableUsersProps = ModalProps & {
   data: Users[]
 }
 
-export function TableUsers({ data }: TableUsersProps) {
+export function TableUsers({ data, isModalVisible, onModalVisible }: TableUsersProps) {
   return (
     <TableCustom>
       <Thead>
@@ -27,12 +30,14 @@ export function TableUsers({ data }: TableUsersProps) {
             <td>{item.email}</td>
             <td>{item.role}</td>
             <TdFlex>
-              <button>
+              <Button>
                 <img src={edit} alt="icon-edit" />
-              </button>
-              <button>
+              </Button>
+              <Button
+                onClick={() => onModalVisible('deleteUser', !isModalVisible, item)}
+              >
                 <img src={trash} alt="icon-trash" />
-              </button>
+              </Button>
             </TdFlex>
           </tr>
         ))}

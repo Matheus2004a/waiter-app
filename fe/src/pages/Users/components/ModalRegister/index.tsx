@@ -33,21 +33,17 @@ export function ModalRegister({ isModalVisible, onModalVisible }: ModalProps) {
 
   const queryClient = useQueryClient();
 
-  const createUserMutation = useMutation(createUser, {
-    onSuccess: () => {
+  const { mutate, isLoading } = useMutation(createUser, {
+    onSuccess: (data) => {
+      toast.success(data.message);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries('users');
     }
   });
-
-  async function onSubmit(data: Users) {
-    try {
-      const newUser = await createUserMutation.mutateAsync(data);
-
-      toast.success(newUser.message);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-  }
 
   const isDisableButton = Object.values(errors).length > 0;
 
@@ -56,12 +52,15 @@ export function ModalRegister({ isModalVisible, onModalVisible }: ModalProps) {
       <header>
         <h2>Novo Usuário</h2>
 
-        <button onClick={onModalVisible}>
+        <Button
+          type='button'
+          onClick={() => onModalVisible('newUser', !isModalVisible)}
+        >
           <img src={closeIcon} alt="icon-close" />
-        </button>
+        </Button>
       </header>
 
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit((data) => mutate(data))}>
         <Fieldset isInvalid={errors.name}>
           <label htmlFor="name">Nome</label>
           <input
@@ -121,10 +120,10 @@ export function ModalRegister({ isModalVisible, onModalVisible }: ModalProps) {
 
         <Button
           type='submit'
-          isDisabled={isDisableButton || createUserMutation.isLoading}
+          isDisabled={isDisableButton || isLoading}
           hasChildren
         >
-          {createUserMutation.isLoading ? <Spinner /> : 'Cadastrar usuário'}
+          {isLoading ? <Spinner /> : 'Cadastrar usuário'}
         </Button>
       </Form>
     </Modal>
