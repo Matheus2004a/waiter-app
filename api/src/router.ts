@@ -16,6 +16,7 @@ import { createProduct } from './app/useCases/products/createProduct';
 import { listProducts } from './app/useCases/products/listProducts';
 import { createUser } from './app/useCases/users/createUser';
 import { listAll, listById } from './app/useCases/users/listUser';
+import { updateUser } from './app/useCases/users/updateUser';
 import { deleteUser } from './app/useCases/users/deleteUser';
 import { loginUser } from './app/useCases/users/loginUser';
 
@@ -51,4 +52,5 @@ router.get('/users', listAll);
 router.get('/users/:id', listById);
 router.post('/users', createUser);
 router.post('/login', loginUser);
+router.patch('/users/:id', updateUser);
 router.delete('/users/:id', deleteUser);
