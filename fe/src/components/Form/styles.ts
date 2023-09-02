@@ -66,3 +66,19 @@ export const RadioGroup = styled.div`
     color: var(--brand-red, #D73035);
   }
 `;
+
+export const Content = styled.div`
+  display: flex;
+  margin: 0 auto;
+  gap: 8px;
+  padding: 11.5px 14px;
+  border-radius: 75px;
+  background: var(--White, #FFF);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.10);
+`;
+
+export const Footer = styled.footer`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;

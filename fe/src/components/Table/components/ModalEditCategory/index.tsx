@@ -3,9 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import CategoriesServices from '../../../../services/CategoriesServices';
-import { Category, FormDataCategory } from '../../../../types/Categories';
-import { ModalProps } from '../../../../types/Modal';
+import { CategoryProps, FormDataCategory } from '../../../../types/Categories';
+import { updateCategory } from '../../../../utils/actionsCategories';
 import { schemaCategories } from '../../../../validations/schemaCategories';
 
 import Button from '../../../Button';
@@ -17,17 +16,7 @@ import { Fieldset, Form } from '../../../Form/styles';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
 
-type EditCategoryProps = ModalProps & {
-  item: Category
-};
-
-async function updateCategory(data: Category) {
-  const newCategory = await CategoriesServices.update(data);
-
-  return newCategory;
-}
-
-export function ModalEditCategory({ isModalVisible, onModalVisible, item }: EditCategoryProps) {
+export function ModalEditCategory({ isModalVisible, onModalVisible, item }: CategoryProps) {
   if (!isModalVisible) return null;
 
   const {
@@ -45,8 +34,8 @@ export function ModalEditCategory({ isModalVisible, onModalVisible, item }: Edit
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation(updateCategory, {
-    onSuccess: (data) => {
-      toast.success(data.message || 'Categoria atualizada com sucesso');
+    onSuccess: () => {
+      toast.success('Categoria atualizada com sucesso');
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -69,9 +58,12 @@ export function ModalEditCategory({ isModalVisible, onModalVisible, item }: Edit
       <header>
         <h2>Editar Categoria</h2>
 
-        <button onClick={() => onModalVisible('editCategory', !isModalVisible)}>
+        <Button
+          type='button'
+          onClick={() => onModalVisible('editCategory', !isModalVisible)}
+        >
           <img src={closeIcon} alt="icon-close" />
-        </button>
+        </Button>
       </header>
 
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -98,7 +90,12 @@ export function ModalEditCategory({ isModalVisible, onModalVisible, item }: Edit
         </Fieldset>
 
         <Flex style={{ justifyContent: 'flex-end', margin: 0 }}>
-          <Button type='reset'>Excluir Categoria</Button>
+          <Button
+            type='reset'
+            onClick={() => onModalVisible('editCategory', !isModalVisible)}
+          >
+            Excluir Categoria
+          </Button>
           <Button
             type='submit'
             isDisabled={isDisableButton || isLoading}

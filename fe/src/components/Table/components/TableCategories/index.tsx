@@ -9,6 +9,7 @@ import { TableCustom, TdFlex, Thead } from '../../styles';
 
 import edit from '../../../../assets/images/edit.svg';
 import trash from '../../../../assets/images/trash.svg';
+import { ModalDeleteCategory } from '../ModalDeleteCategory';
 import { ModalEditCategory } from '../ModalEditCategory';
 
 interface TableCategoriesProps {
@@ -25,6 +26,7 @@ export default function TableCategories({ data, isVisible, isLoading }: TableCat
   const [isModalVisible, setIsModalVisible] = useState({
     newCategory: false,
     editCategory: false,
+    deleteCategory: false,
   });
 
   const [categorySelected, setCategorySelected] = useState({} as Category);
@@ -36,8 +38,8 @@ export default function TableCategories({ data, isVisible, isLoading }: TableCat
     }));
   }, []);
 
-  function handleEditItem(item: Category) {
-    handleModalVisible('editCategory', !isModalVisible.editCategory);
+  function handleItem(key: string, value: boolean, item: Category) {
+    handleModalVisible(key, value);
 
     setCategorySelected(item);
   }
@@ -51,6 +53,12 @@ export default function TableCategories({ data, isVisible, isLoading }: TableCat
 
       <ModalEditCategory
         isModalVisible={isModalVisible.editCategory}
+        onModalVisible={handleModalVisible}
+        item={categorySelected}
+      />
+
+      <ModalDeleteCategory
+        isModalVisible={isModalVisible.deleteCategory}
         onModalVisible={handleModalVisible}
         item={categorySelected}
       />
@@ -82,10 +90,14 @@ export default function TableCategories({ data, isVisible, isLoading }: TableCat
               </td>
               <td>{item.name}</td>
               <TdFlex>
-                <button onClick={() => handleEditItem(item)}>
+                <button
+                  onClick={() => handleItem('editCategory', !isModalVisible.editCategory, item)}
+                >
                   <img src={edit} alt="icon-edit" />
                 </button>
-                <button>
+                <button
+                  onClick={() => handleItem('deleteCategory', !isModalVisible.deleteCategory, item)}
+                >
                   <img src={trash} alt="icon-trash" />
                 </button>
               </TdFlex>

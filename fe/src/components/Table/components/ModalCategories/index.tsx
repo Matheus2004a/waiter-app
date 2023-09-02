@@ -34,22 +34,18 @@ export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) 
 
   const queryClient = useQueryClient();
 
-  const createCategoryMutation = useMutation(createCategory, {
-    onSuccess: () => {
+  const { mutate, isLoading } = useMutation(createCategory, {
+    onSuccess: (data) => {
+      toast.success(data.message);
+      onModalVisible('newCategory', !isModalVisible);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries('categories');
     }
   });
-
-  async function onSubmit(data: FormDataCategory) {
-    try {
-      // Executar a mutação passando os dados necessários
-      const newCategory = await createCategoryMutation.mutateAsync(data);
-
-      toast.success(newCategory.message);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-  }
 
   const isDisableButton = Object.values(errors).length > 0;
 
@@ -58,12 +54,15 @@ export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) 
       <header>
         <h2>Nova Categoria</h2>
 
-        <button onClick={() => onModalVisible('newCategory', !isModalVisible)}>
+        <Button
+          type='button'
+          onClick={() => onModalVisible('newCategory', !isModalVisible)}
+        >
           <img src={closeIcon} alt="icon-close" />
-        </button>
+        </Button>
       </header>
 
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit((data) => mutate(data))}>
         <Fieldset isInvalid={errors.icon}>
           <label htmlFor="emoji">Emoji</label>
           <input
@@ -72,9 +71,7 @@ export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) 
             placeholder='Ex: 🧀'
             {...register('icon')}
           />
-          {errors.icon &&
-            <span>{errors.icon.message}</span>
-          }
+          {errors.icon && <span>{errors.icon.message}</span>}
         </Fieldset>
 
         <Fieldset isInvalid={errors.name}>
@@ -85,17 +82,15 @@ export function ModalCategories({ isModalVisible, onModalVisible }: ModalProps) 
             placeholder='Ex: Lanches'
             {...register('name')}
           />
-          {errors.name &&
-            <span>{errors.name.message}</span>
-          }
+          {errors.name && <span>{errors.name.message}</span>}
         </Fieldset>
 
         <Flex style={{ justifyContent: 'flex-end', margin: 0 }}>
           <Button
             type='submit'
-            isDisabled={isDisableButton || createCategoryMutation.isLoading}
+            isDisabled={isDisableButton || isLoading}
           >
-            {createCategoryMutation.isLoading ? <Spinner /> : 'Salvar Alterações'}
+            {isLoading ? <Spinner /> : 'Salvar Alterações'}
           </Button>
         </Flex>
       </Form>
