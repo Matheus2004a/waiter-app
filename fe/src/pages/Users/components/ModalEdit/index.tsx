@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
+import useVisiblePassword from '../../../../hooks/useVisiblePassword';
 import UserServices from '../../../../services/UserServices';
 import { TableUsersProps, Users } from '../../../../types/Users';
 import { schemaRegister } from '../../../../validations/schemaRegister';
@@ -32,10 +33,12 @@ export function ModalEdit({ data, isModalVisible, onModalVisible }: TableUsersPr
     defaultValues: {
       name: data.name,
       email: data.email,
-      password: data.password,
+      password: data.password.slice(0, 4),
     },
     resolver: zodResolver(schemaRegister)
   });
+
+  const { visiblePassword, handleVisiblePassword, eyeStatus } = useVisiblePassword();
 
   const queryClient = useQueryClient();
 
@@ -91,11 +94,15 @@ export function ModalEdit({ data, isModalVisible, onModalVisible }: TableUsersPr
         <Fieldset isInvalid={errors.password}>
           <label htmlFor="password">Senha</label>
           <input
-            type="password"
+            type={visiblePassword}
             id="password"
             {...register('password')}
           />
           {errors.password && <span>{errors.password.message}</span>}
+
+          <span onClick={handleVisiblePassword} className='eye'>
+            {eyeStatus}
+          </span>
         </Fieldset>
 
         <Fieldset isInvalid={errors.role}>

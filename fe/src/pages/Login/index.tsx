@@ -8,8 +8,7 @@ import useLogin from './useLogin';
 import { Spinner } from '../../components/Spinner';
 import { Container, Fieldset, Form, SectionWelcome, StyledButton } from './style';
 
-import eyeHidden from '../../assets/images/eye-hidden.svg';
-import eye from '../../assets/images/eye.svg';
+import useVisiblePassword from '../../hooks/useVisiblePassword';
 
 export default function Login() {
   const {
@@ -22,9 +21,10 @@ export default function Login() {
   });
 
   const {
-    isLoading, visiblePassword, handleVisiblePassword,
-    submitLogin, renderErrorMessage
+    isLoading, submitLogin, renderErrorMessage
   } = useLogin(setError);
+
+  const { visiblePassword, handleVisiblePassword, eyeStatus } = useVisiblePassword();
 
   const isDisabledButton = Object.keys(errors).length > 0;
 
@@ -66,8 +66,7 @@ export default function Login() {
           }
 
           <span onClick={handleVisiblePassword} className='eye'>
-            {visiblePassword === 'text' && <img src={eyeHidden} alt="icon-eye-hidden" />}
-            {visiblePassword === 'password' && <img src={eye} alt="icon-eye" />}
+            {eyeStatus}
           </span>
         </Fieldset>
 

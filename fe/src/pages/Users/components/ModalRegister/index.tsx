@@ -15,6 +15,7 @@ import { Spinner } from '../../../../components/Spinner';
 import { Fieldset, Form, RadioGroup } from '../../../../components/Form/styles';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
+import useVisiblePassword from '../../../../hooks/useVisiblePassword';
 
 async function createUser(data: Users) {
   const newUser = await UserServices.create(data);
@@ -30,6 +31,8 @@ export function ModalRegister({ isModalVisible, onModalVisible }: ModalProps) {
   } = useForm<Users>({
     resolver: zodResolver(schemaRegister)
   });
+
+  const { visiblePassword, handleVisiblePassword, eyeStatus } = useVisiblePassword();
 
   const queryClient = useQueryClient();
 
@@ -84,11 +87,15 @@ export function ModalRegister({ isModalVisible, onModalVisible }: ModalProps) {
         <Fieldset isInvalid={errors.password}>
           <label htmlFor="password">Senha</label>
           <input
-            type="password"
+            type={visiblePassword}
             id="password"
             {...register('password')}
           />
           {errors.password && <span>{errors.password.message}</span>}
+
+          <span onClick={handleVisiblePassword} className='eye'>
+            {eyeStatus}
+          </span>
         </Fieldset>
 
         <Fieldset isInvalid={errors.role}>

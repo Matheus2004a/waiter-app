@@ -46,6 +46,13 @@ export const Fieldset = styled.fieldset<FieldsetProps>`
   span {
     color: var(--brand-red, #D73035);
   }
+
+  .eye {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    bottom: ${({ isInvalid }) => isInvalid ? '35px' : '10px'};
+  }
 `;
 
 export const RadioGroup = styled.div`

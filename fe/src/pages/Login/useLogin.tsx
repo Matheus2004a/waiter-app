@@ -17,14 +17,9 @@ interface LoginDataProps {
 
 export default function useLogin(setError: UseFormSetError<FormData>) {
   const [isLoading, setIsLoading] = useState(false);
-  const [visiblePassword, setVisiblePassword] = useState('password');
 
   const navigate = useNavigate();
   const { signin, handleUserAdmin } = useAuth();
-
-  function handleVisiblePassword() {
-    setVisiblePassword((prevState) => prevState === 'password' ? 'text' : 'password');
-  }
 
   const submitLogin = useCallback(async (dataUser: FormData) => {
     try {
@@ -63,8 +58,6 @@ export default function useLogin(setError: UseFormSetError<FormData>) {
 
   return {
     isLoading,
-    visiblePassword,
-    handleVisiblePassword,
     submitLogin,
     renderErrorMessage,
   };
