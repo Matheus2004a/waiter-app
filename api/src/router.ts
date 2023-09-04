@@ -14,6 +14,8 @@ import { createOrder } from './app/useCases/orders/createOrder';
 import { listOrders } from './app/useCases/orders/listOrders';
 import { createProduct } from './app/useCases/products/createProduct';
 import { listProducts } from './app/useCases/products/listProducts';
+import { listProductById } from './app/useCases/products/listProductById';
+import { deleteProductById } from './app/useCases/products/deleteProductById';
 import { createUser } from './app/useCases/users/createUser';
 import { listAll, listById } from './app/useCases/users/listUser';
 import { updateUser } from './app/useCases/users/updateUser';
@@ -39,7 +41,9 @@ router.put('/categories/:categoryId', updateCategory);
 router.delete('/categories/:categoryId', deleteCategory);
 
 router.get('/products', listProducts);
+router.get('/products/:id', listProductById);
 router.post('/products', upload.single('imagePath'), createProduct);
+router.delete('/products/:id', deleteProductById);
 
 router.get('/categories/:categoryId/products', listProductsByCategory);
 
