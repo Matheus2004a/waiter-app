@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import UserServices from '../../../../services/UserServices';
-import { ModalProps } from '../../../../types/Modal';
 import { Users } from '../../../../types/Users';
 import { schemaRegister } from '../../../../validations/schemaRegister';
 
@@ -15,6 +14,7 @@ import { Spinner } from '../../../../components/Spinner';
 import { Fieldset, Form, RadioGroup } from '../../../../components/Form/styles';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
+import useModal from '../../../../hooks/useModal';
 import useVisiblePassword from '../../../../hooks/useVisiblePassword';
 
 async function createUser(data: Users) {
@@ -23,7 +23,9 @@ async function createUser(data: Users) {
   return newUser;
 }
 
-export function ModalRegister({ isModalVisible, onModalVisible }: ModalProps) {
+export function ModalRegister({ isVisible }: { isVisible: boolean }) {
+  const { handleModalVisible } = useModal();
+
   const {
     register,
     handleSubmit,
@@ -51,13 +53,13 @@ export function ModalRegister({ isModalVisible, onModalVisible }: ModalProps) {
   const isDisableButton = Object.values(errors).length > 0;
 
   return (
-    <Modal isVisible={isModalVisible}>
+    <Modal isVisible={isVisible}>
       <header>
         <h2>Novo Usuário</h2>
 
         <Button
           type='button'
-          onClick={() => onModalVisible('newUser', !isModalVisible)}
+          onClick={() => handleModalVisible('newUser', !isVisible)}
         >
           <img src={closeIcon} alt="icon-close" />
         </Button>

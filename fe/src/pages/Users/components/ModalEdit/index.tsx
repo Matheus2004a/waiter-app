@@ -3,9 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
+import useAuth from '../../../../hooks/useAuth';
+import useModal from '../../../../hooks/useModal';
 import useVisiblePassword from '../../../../hooks/useVisiblePassword';
 import UserServices from '../../../../services/UserServices';
-import { TableUsersProps, Users } from '../../../../types/Users';
+import { Users } from '../../../../types/Users';
 import { schemaRegister } from '../../../../validations/schemaRegister';
 
 import Button from '../../../../components/Button';
@@ -22,8 +24,10 @@ async function updateUser(data: Users) {
   return newUser;
 }
 
-export function ModalEdit({ data, isModalVisible, onModalVisible }: TableUsersProps) {
-  if (!isModalVisible) return null;
+export function ModalEdit({ isVisible }: { isVisible: boolean }) {
+  if (!isVisible) return null;
+
+  const { handleModalVisible, userSelected } = useModal();
 
   const {
     register,
@@ -31,13 +35,14 @@ export function ModalEdit({ data, isModalVisible, onModalVisible }: TableUsersPr
     formState: { errors }
   } = useForm<Users>({
     defaultValues: {
-      name: data.name,
-      email: data.email,
-      password: data.password.slice(0, 4),
+      name: userSelected.name,
+      email: userSelected.email,
+      password: userSelected.password.slice(0, 4),
     },
     resolver: zodResolver(schemaRegister)
   });
 
+  const { isAdmin } = useAuth();
   const { visiblePassword, handleVisiblePassword, eyeStatus } = useVisiblePassword();
 
   const queryClient = useQueryClient();
@@ -45,7 +50,7 @@ export function ModalEdit({ data, isModalVisible, onModalVisible }: TableUsersPr
   const { mutate, isLoading } = useMutation(updateUser, {
     onSuccess: (data) => {
       toast.success(data.message);
-      onModalVisible('updateUser', !isModalVisible);
+      handleModalVisible('updateUser', !isVisible);
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -58,19 +63,19 @@ export function ModalEdit({ data, isModalVisible, onModalVisible }: TableUsersPr
   const isDisableButton = Object.values(errors).length > 0;
 
   return (
-    <Modal isVisible={isModalVisible}>
+    <Modal isVisible={isVisible}>
       <header>
         <h2>Editar Usuário</h2>
 
         <Button
           type='button'
-          onClick={() => onModalVisible('updateUser', !isModalVisible)}
+          onClick={() => handleModalVisible('updateUser', !isVisible)}
         >
           <img src={closeIcon} alt="icon-close" />
         </Button>
       </header>
 
-      <Form onSubmit={handleSubmit((newData) => mutate({ ...newData, _id: data._id }))}>
+      <Form onSubmit={handleSubmit((newData) => mutate({ ...newData, _id: userSelected._id }))}>
         <Fieldset isInvalid={errors.name}>
           <label htmlFor="name">Nome</label>
           <input
@@ -105,34 +110,37 @@ export function ModalEdit({ data, isModalVisible, onModalVisible }: TableUsersPr
           </span>
         </Fieldset>
 
-        <Fieldset isInvalid={errors.role}>
-          <legend>Tipo</legend>
+        {isAdmin && (
+          <Fieldset isInvalid={errors.role}>
+            <legend>Tipo</legend>
 
-          <RadioGroup>
-            <div>
-              <input
-                type="radio"
-                id="admin"
-                value="Admin"
-                {...register('role')}
-              />
-              <label htmlFor="admin">Admin</label>
-            </div>
+            <RadioGroup>
+              <div>
+                <input
+                  type="radio"
+                  id="admin"
+                  value="Admin"
+                  {...register('role')}
+                />
+                <label htmlFor="admin">Admin</label>
+              </div>
 
-            <div>
-              <input
-                type="radio"
-                id="waiter"
-                value="Garçom"
-                {...register('role')}
-              />
-              <label htmlFor="waiter">Garçom</label>
-            </div>
-          </RadioGroup>
-          {errors.role && <span>{errors.role.message}</span>}
-        </Fieldset>
+              <div>
+                <input
+                  type="radio"
+                  id="waiter"
+                  value="Garçom"
+                  {...register('role')}
+                />
+                <label htmlFor="waiter">Garçom</label>
+              </div>
+            </RadioGroup>
+            {errors.role && <span>{errors.role.message}</span>}
+          </Fieldset>
+        )}
 
-        <Footer>
+        <Footer isCenter={isAdmin}>
+          {isAdmin && <Button type='reset'>Excluir Usuário</Button>}
           <Button
             type='submit'
             isDisabled={isDisableButton || isLoading}

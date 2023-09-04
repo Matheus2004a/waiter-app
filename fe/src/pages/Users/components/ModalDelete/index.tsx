@@ -1,32 +1,29 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import UserServices from '../../../../services/UserServices';
-import { TableUsersProps, Users } from '../../../../types/Users';
+import useModal from '../../../../hooks/useModal';
+import { Users } from '../../../../types/Users';
+import { deleteUser } from '../../../../utils/deleteUser';
 
 import Button from '../../../../components/Button';
 import Modal from '../../../../components/Modal';
+import { Spinner } from '../../../../components/Spinner';
 
 import { Fieldset, Form } from '../../../../components/Form/styles';
 import { Footer, Paragraph } from './styles';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import closeIcon from '../../../../assets/images/close-icon.svg';
-import { Spinner } from '../../../../components/Spinner';
 
-async function deleteUser({ _id }: Users) {
-  const userDeleted = await UserServices.delete(_id);
+export function ModalDelete({ isVisible }: { isVisible: boolean }) {
+  if (!isVisible) return null;
 
-  return userDeleted;
-}
-
-export function ModalDelete({ data, isModalVisible, onModalVisible }: TableUsersProps) {
-  if (!isModalVisible) return null;
+  const { handleModalVisible, userSelected } = useModal();
 
   const { register, handleSubmit } = useForm<Users>({
     defaultValues: {
-      name: data.name,
-      email: data.email
+      name: userSelected.name,
+      email: userSelected.email
     }
   });
 
@@ -35,7 +32,7 @@ export function ModalDelete({ data, isModalVisible, onModalVisible }: TableUsers
   const { mutate, isLoading } = useMutation(deleteUser, {
     onSuccess: (data) => {
       toast.success(data.message);
-      onModalVisible('deleteUser', !isModalVisible);
+      handleModalVisible('deleteUser', !isVisible);
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -46,18 +43,18 @@ export function ModalDelete({ data, isModalVisible, onModalVisible }: TableUsers
   });
 
   return (
-    <Modal isVisible={isModalVisible}>
+    <Modal isVisible={isVisible}>
       <header>
         <h2>Excluir Usuário</h2>
 
-        <Button onClick={() => onModalVisible('deleteUser', !isModalVisible)}>
+        <Button onClick={() => handleModalVisible('deleteUser', !isVisible)}>
           <img src={closeIcon} alt="icon-close" />
         </Button>
       </header>
 
       <Paragraph>Tem certeza que deseja excluir o usuário?</Paragraph>
 
-      <Form onSubmit={handleSubmit(() => mutate(data))}>
+      <Form onSubmit={handleSubmit(() => mutate(userSelected))}>
         <Fieldset>
           <label htmlFor="name">Nome</label>
           <input
@@ -81,7 +78,7 @@ export function ModalDelete({ data, isModalVisible, onModalVisible }: TableUsers
         <Footer>
           <Button
             type='button'
-            onClick={() => onModalVisible('deleteUser', !isModalVisible)}
+            onClick={() => handleModalVisible('deleteUser', !isVisible)}
           >
             Manter Usuário
           </Button>

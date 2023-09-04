@@ -6,9 +6,9 @@ import { Orders } from './pages/Orders';
 import Products from './pages/Products';
 import Users from './pages/Users';
 
+import UserProvider from './contexts/Modal/UserContext';
 import { DashboardLayout } from './layouts/DashboardLayout';
 
-import AdminRoutes from './AdminRoutes';
 import PrivateRoutes from './PrivateRoutes';
 
 export default function Router() {
@@ -21,9 +21,11 @@ export default function Router() {
             <Route path='/orders' element={<Orders />} />
             <Route path='/history' element={<History />} />
             <Route path='/menu' element={<Products />} />
-          </Route>
-          <Route element={<AdminRoutes />}>
-            <Route path='/users' element={<Users />} />
+            <Route path='/users' element={
+              <UserProvider>
+                <Users />
+              </UserProvider>
+            } />
           </Route>
         </Route>
       </Routes>

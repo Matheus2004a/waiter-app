@@ -1,36 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useState } from 'react';
 
+import useModal from '../../hooks/useModal';
 import UserServices from '../../services/UserServices';
-import { Users as UsersType } from '../../types/Users';
 
 import { TableUsers } from '../../components/Table/components/TableUsers';
 import { ModalDelete } from './components/ModalDelete';
+import { ModalEdit } from './components/ModalEdit';
 import { ModalRegister } from './components/ModalRegister';
 
-import { Flex, Header } from '../History/styles';
+import { Header } from '../History/styles';
 
 import users from '../../assets/images/users.svg';
-import Button from '../../components/Button';
-import { ModalEdit } from './components/ModalEdit';
 
 export default function Users() {
-  const [isModalVisible, setIsModalVisible] = useState({
-    newUser: false,
-    updateUser: false,
-    deleteUser: false,
-  });
-
-  const [userSelected, setUserSelected] = useState({} as UsersType);
-
-  const handleModalVisible = useCallback((key: string, value: boolean, item?: UsersType) => {
-    setIsModalVisible((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
-
-    if (item) setUserSelected(item);
-  }, []);
+  const { isModalVisible } = useModal();
 
   const { data } = useQuery({
     queryKey: ['users'],
@@ -39,22 +22,9 @@ export default function Users() {
 
   return (
     <>
-      <ModalRegister
-        isModalVisible={isModalVisible.newUser}
-        onModalVisible={handleModalVisible}
-      />
-
-      <ModalEdit
-        data={userSelected}
-        isModalVisible={isModalVisible.updateUser}
-        onModalVisible={handleModalVisible}
-      />
-
-      <ModalDelete
-        data={userSelected}
-        isModalVisible={isModalVisible.deleteUser}
-        onModalVisible={handleModalVisible}
-      />
+      <ModalRegister isVisible={isModalVisible.newUser} />
+      <ModalEdit isVisible={isModalVisible.updateUser} />
+      <ModalDelete isVisible={isModalVisible.deleteUser} />
 
       <main>
         <Header>
@@ -70,25 +40,7 @@ export default function Users() {
           </div>
         </Header>
 
-        <Flex>
-          <div>
-            <h3>Usuários</h3>
-            <strong>{data?.length}</strong>
-          </div>
-
-          <Button
-            type='button'
-            onClick={() => handleModalVisible('newUser', !isModalVisible.newUser)}
-          >
-            Novo usuário
-          </Button>
-        </Flex>
-
-        <TableUsers
-          data={data}
-          isModalVisible={isModalVisible.deleteUser}
-          onModalVisible={handleModalVisible}
-        />
+        <TableUsers data={data} />
       </main>
     </>
   );

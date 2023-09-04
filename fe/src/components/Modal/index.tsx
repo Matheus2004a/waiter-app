@@ -1,3 +1,4 @@
+import Portal from '../Portal';
 import { ModalBody, Overlay } from './styles';
 
 interface ModalProps {
@@ -11,10 +12,12 @@ export default function Modal({ children, isVisible }: ModalProps) {
   }
 
   return (
-    <Overlay>
-      <ModalBody>
-        {children}
-      </ModalBody>
-    </Overlay>
+    <Portal containerId="portal-root">
+      <Overlay>
+        <ModalBody>
+          {children}
+        </ModalBody>
+      </Overlay>
+    </Portal>
   );
 }
