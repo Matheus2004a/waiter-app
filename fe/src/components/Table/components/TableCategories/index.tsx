@@ -14,12 +14,12 @@ import { ModalEditCategory } from '../ModalEditCategory';
 
 interface TableCategoriesProps {
   data: Category[];
-  isVisible: boolean;
+  isChecked: boolean;
   isLoading: boolean;
 }
 
-export default function TableCategories({ data, isVisible, isLoading }: TableCategoriesProps) {
-  if (!isVisible) return null;
+export default function TableCategories({ data, isChecked, isLoading }: TableCategoriesProps) {
+  if (!isChecked) return null;
 
   if (isLoading) return <Spinner />;
 

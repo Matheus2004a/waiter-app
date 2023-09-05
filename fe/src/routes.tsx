@@ -10,6 +10,7 @@ import UserProvider from './contexts/Modal/UserContext';
 import { DashboardLayout } from './layouts/DashboardLayout';
 
 import PrivateRoutes from './PrivateRoutes';
+import ProductProvider from './contexts/Modal/ProductContext';
 
 export default function Router() {
   return (
@@ -20,7 +21,11 @@ export default function Router() {
           <Route element={<PrivateRoutes />}>
             <Route path='/orders' element={<Orders />} />
             <Route path='/history' element={<History />} />
-            <Route path='/menu' element={<Products />} />
+            <Route path='/menu' element={
+              <ProductProvider>
+                <Products />
+              </ProductProvider>
+            } />
             <Route path='/users' element={
               <UserProvider>
                 <Users />

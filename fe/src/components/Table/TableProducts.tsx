@@ -1,5 +1,7 @@
+import useProductsModal from '../../hooks/useProductsModal';
 import { api } from '../../services/api';
 import { Product } from '../../types/Product';
+import { handleImageFallback } from '../../utils/fallbackImg';
 import { formatCurrency } from '../../utils/formatCurrency';
 
 import Button from '../Button';
@@ -13,19 +15,16 @@ import trash from '../../assets/images/trash.svg';
 
 interface TableProductsProps {
   data: Product[];
-  isVisible: boolean;
+  isChecked: boolean;
   isLoading: boolean;
 }
 
-function handleImageFallback(event: React.SyntheticEvent<HTMLImageElement>) {
-  const img = event.target as HTMLImageElement;
-  img.src = 'https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg';
-}
-
-export default function TableProducts({ data, isVisible, isLoading }: TableProductsProps) {
-  if (!isVisible) return null;
+export default function TableProducts({ data, isChecked, isLoading }: TableProductsProps) {
+  if (!isChecked) return null;
 
   if (isLoading) return <Spinner />;
+
+  const { isModalVisible, handleModalVisible } = useProductsModal();
 
   return (
     <>
@@ -60,12 +59,17 @@ export default function TableProducts({ data, isVisible, isLoading }: TableProdu
               <td>{item.name}</td>
               <td>{formatCurrency(item.price)}</td>
               <TdFlex>
-                <button>
+                <Button>
                   <img src={edit} alt="icon-edit" />
-                </button>
-                <button>
+                </Button>
+                <Button
+                  onClick={() => handleModalVisible(
+                    'deleteProduct',
+                    !isModalVisible.deleteProduct,
+                    item
+                  )}>
                   <img src={trash} alt="icon-trash" />
-                </button>
+                </Button>
               </TdFlex>
             </tr>
           ))}

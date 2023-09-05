@@ -1,16 +1,18 @@
 import { useQueries } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import useProductsModal from '../../hooks/useProductsModal';
+import CategoriesServices from '../../services/CategoriesServices';
 import ProductServices from '../../services/ProductServices';
 
 import TableProducts from '../../components/Table/TableProducts';
+import TableCategories from '../../components/Table/components/TableCategories';
+import { ModalRemove } from './components/ModalRemove';
 
 import { Flex, Header } from '../History/styles';
 import { MenuItem, Nav } from './styles';
 
 import menu from '../../assets/images/menu.svg';
-import TableCategories from '../../components/Table/components/TableCategories';
-import CategoriesServices from '../../services/CategoriesServices';
 
 export default function Products() {
   const [isActive, setIsActive] = useState('product');
@@ -28,49 +30,55 @@ export default function Products() {
     ]
   });
 
+  const { isModalVisible } = useProductsModal();
+
   return (
-    <main>
-      <Header>
-        <div>
-          <figure>
-            <img src={menu} alt="icon-menu" />
-            <figcaption>
-              <h3>Cardápio</h3>
-            </figcaption>
-          </figure>
+    <>
+      <ModalRemove isVisible={isModalVisible.deleteProduct} />
 
-          <p>Gerencie os produtos do seu estabelecimento</p>
-        </div>
-      </Header>
+      <main>
+        <Header>
+          <div>
+            <figure>
+              <img src={menu} alt="icon-menu" />
+              <figcaption>
+                <h3>Cardápio</h3>
+              </figcaption>
+            </figure>
 
-      <Flex>
-        <Nav>
-          <ul>
-            <MenuItem
-              isActive={isActive === 'product'}
-              onClick={() => setIsActive('product')}>
-              Produtos
-            </MenuItem>
-            <MenuItem
-              isActive={isActive === 'category'}
-              onClick={() => setIsActive('category')}>
-              Categorias
-            </MenuItem>
-          </ul>
-        </Nav>
-      </Flex>
+            <p>Gerencie os produtos do seu estabelecimento</p>
+          </div>
+        </Header>
 
-      <TableProducts
-        data={products.data}
-        isVisible={isActive === 'product'}
-        isLoading={products.isLoading}
-      />
+        <Flex>
+          <Nav>
+            <ul>
+              <MenuItem
+                isActive={isActive === 'product'}
+                onClick={() => setIsActive('product')}>
+                Produtos
+              </MenuItem>
+              <MenuItem
+                isActive={isActive === 'category'}
+                onClick={() => setIsActive('category')}>
+                Categorias
+              </MenuItem>
+            </ul>
+          </Nav>
+        </Flex>
 
-      <TableCategories
-        data={categories.data}
-        isVisible={isActive === 'category'}
-        isLoading={categories.isLoading}
-      />
-    </main>
+        <TableProducts
+          data={products.data}
+          isChecked={isActive === 'product'}
+          isLoading={products.isLoading}
+        />
+
+        <TableCategories
+          data={categories.data}
+          isChecked={isActive === 'category'}
+          isLoading={categories.isLoading}
+        />
+      </main>
+    </>
   );
 }
