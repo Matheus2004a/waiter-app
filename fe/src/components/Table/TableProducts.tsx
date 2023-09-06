@@ -34,7 +34,12 @@ export default function TableProducts({ data, isChecked, isLoading }: TableProdu
           <strong>{data.length}</strong>
         </div>
 
-        <Button type='button'>Novo produto</Button>
+        <Button
+          type='button'
+          onClick={()=> handleModalVisible('newProduct', !isModalVisible.newProduct)}
+        >
+          Novo produto
+        </Button>
       </Flex>
 
       <TableCustom>

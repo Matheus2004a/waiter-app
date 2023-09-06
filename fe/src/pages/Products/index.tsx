@@ -7,6 +7,7 @@ import ProductServices from '../../services/ProductServices';
 
 import TableProducts from '../../components/Table/TableProducts';
 import TableCategories from '../../components/Table/components/TableCategories';
+import { ModalRegister } from './components/ModalRegister';
 import { ModalRemove } from './components/ModalRemove';
 
 import { Flex, Header } from '../History/styles';
@@ -33,52 +34,54 @@ export default function Products() {
   const { isModalVisible } = useProductsModal();
 
   return (
-    <>
+    <main>
       <ModalRemove isVisible={isModalVisible.deleteProduct} />
+      <ModalRegister
+        isVisible={isModalVisible.newProduct}
+        categories={categories.data}
+      />
 
-      <main>
-        <Header>
-          <div>
-            <figure>
-              <img src={menu} alt="icon-menu" />
-              <figcaption>
-                <h3>Cardápio</h3>
-              </figcaption>
-            </figure>
+      <Header>
+        <div>
+          <figure>
+            <img src={menu} alt="icon-menu" />
+            <figcaption>
+              <h3>Cardápio</h3>
+            </figcaption>
+          </figure>
 
-            <p>Gerencie os produtos do seu estabelecimento</p>
-          </div>
-        </Header>
+          <p>Gerencie os produtos do seu estabelecimento</p>
+        </div>
+      </Header>
 
-        <Flex>
-          <Nav>
-            <ul>
-              <MenuItem
-                isActive={isActive === 'product'}
-                onClick={() => setIsActive('product')}>
-                Produtos
-              </MenuItem>
-              <MenuItem
-                isActive={isActive === 'category'}
-                onClick={() => setIsActive('category')}>
-                Categorias
-              </MenuItem>
-            </ul>
-          </Nav>
-        </Flex>
+      <Flex>
+        <Nav>
+          <ul>
+            <MenuItem
+              isActive={isActive === 'product'}
+              onClick={() => setIsActive('product')}>
+              Produtos
+            </MenuItem>
+            <MenuItem
+              isActive={isActive === 'category'}
+              onClick={() => setIsActive('category')}>
+              Categorias
+            </MenuItem>
+          </ul>
+        </Nav>
+      </Flex>
 
-        <TableProducts
-          data={products.data}
-          isChecked={isActive === 'product'}
-          isLoading={products.isLoading}
-        />
+      <TableProducts
+        data={products.data}
+        isChecked={isActive === 'product'}
+        isLoading={products.isLoading}
+      />
 
-        <TableCategories
-          data={categories.data}
-          isChecked={isActive === 'category'}
-          isLoading={categories.isLoading}
-        />
-      </main>
-    </>
+      <TableCategories
+        data={categories.data}
+        isChecked={isActive === 'category'}
+        isLoading={categories.isLoading}
+      />
+    </main>
   );
 }

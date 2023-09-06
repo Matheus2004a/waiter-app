@@ -55,6 +55,20 @@ export const Fieldset = styled.fieldset<FieldsetProps>`
   }
 `;
 
+export const ContentSearch = styled.div`
+  position: relative;
+
+  input[type="search"] {
+    width: 100%;
+  }
+
+  input[type="search"] ~ img {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+`;
+
 export const RadioGroup = styled.div`
   display: flex;
   gap: 32px;

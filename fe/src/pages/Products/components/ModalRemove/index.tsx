@@ -14,9 +14,9 @@ import Modal from '../../../../components/Modal';
 import { Spinner } from '../../../../components/Spinner';
 
 import { Footer, Form } from '../../../../components/Form/styles';
+import { ContainerProduct, Paragraph } from './styles';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
-import { ContainerProduct, Paragraph } from './styles';
 
 async function deleteProduct({ _id }: Product) {
   const product = await ProductServices.delete(_id);

@@ -1,9 +1,16 @@
 import { api } from './api';
 
+import { Product } from '../types/Product';
 
 class ProductServices {
   async listAll() {
     const { data } = await api.get('/products');
+
+    return data;
+  }
+
+  async create(dataProduct: Product) {
+    const { data } = await api.post('/products', dataProduct);
 
     return data;
   }
