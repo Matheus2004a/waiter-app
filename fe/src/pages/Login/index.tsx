@@ -35,7 +35,7 @@ export default function Login() {
         <p><strong>Waiter</strong>App</p>
       </SectionWelcome>
 
-      <Form onSubmit={handleSubmit(submitLogin)}>
+      <Form onSubmit={handleSubmit((data) => submitLogin(data))}>
         <Fieldset isInvalid={errors.email}>
           <label htmlFor="email">E-mail</label>
           <input
