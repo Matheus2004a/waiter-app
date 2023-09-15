@@ -7,6 +7,7 @@ import closeIcon from '../../../../assets/images/close-icon.svg';
 
 import { formatCurrency } from '../../../../utils/formatCurrency';
 
+import Button from '../../../../components/Button';
 import Modal from '../../../../components/Modal';
 import { Footer, OrderContainerItem, OrderDetails } from './styles';
 
@@ -73,9 +74,9 @@ export function OrderModal({
       <header>
         <strong>Mesa {order.table}</strong>
 
-        <button onClick={onClose}>
+        <Button onClick={onClose}>
           <img src={closeIcon} alt="close-icon" />
-        </button>
+        </Button>
       </header>
 
       <div className="status-container">
@@ -113,15 +114,15 @@ export function OrderModal({
       </OrderDetails>
 
       <Footer isOrderDone={order.status === 'DONE'}>
-        <button
+        <Button
           type='reset'
           onClick={onCancelOrder}
           disabled={isLoading}
         >
             Cancelar Pedido
-        </button>
+        </Button>
         {order.status !== 'DONE' && (
-          <button
+          <Button
             type='button'
             disabled={isLoading}
             onClick={onOrderStatusChange}
@@ -132,7 +133,7 @@ export function OrderModal({
                 <span>Concluir pedido</span>
               )
             }
-          </button>
+          </Button>
         )}
       </Footer>
     </Modal>

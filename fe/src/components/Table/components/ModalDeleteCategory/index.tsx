@@ -44,9 +44,9 @@ export function ModalDeleteCategory({ isModalVisible, onModalVisible, item }: Ca
       <header>
         <h2>Excluir Categoria</h2>
 
-        <button onClick={() => onModalVisible('deleteCategory', !isModalVisible)}>
+        <Button onClick={() => onModalVisible('deleteCategory', !isModalVisible)}>
           <img src={closeIcon} alt="icon-close" />
-        </button>
+        </Button>
       </header>
 
       <Paragraph>Tem certeza que deseja excluir a categoria?</Paragraph>

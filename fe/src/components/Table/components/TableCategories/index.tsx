@@ -9,6 +9,8 @@ import { TableCustom, TdFlex, Thead } from '../../styles';
 
 import edit from '../../../../assets/images/edit.svg';
 import trash from '../../../../assets/images/trash.svg';
+
+import Button from '../../../Button';
 import { ModalDeleteCategory } from '../ModalDeleteCategory';
 import { ModalEditCategory } from '../ModalEditCategory';
 
@@ -69,9 +71,9 @@ export default function TableCategories({ data, isChecked, isLoading }: TableCat
           <strong>{data.length}</strong>
         </div>
 
-        <button onClick={() => handleModalVisible('newCategory', !isModalVisible.newCategory)}>
+        <Button onClick={() => handleModalVisible('newCategory', !isModalVisible.newCategory)}>
           Nova categoria
-        </button>
+        </Button>
       </Flex>
 
       <TableCustom>
@@ -90,16 +92,16 @@ export default function TableCategories({ data, isChecked, isLoading }: TableCat
               </td>
               <td>{item.name}</td>
               <TdFlex>
-                <button
+                <Button
                   onClick={() => handleItem('editCategory', !isModalVisible.editCategory, item)}
                 >
                   <img src={edit} alt="icon-edit" />
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => handleItem('deleteCategory', !isModalVisible.deleteCategory, item)}
                 >
                   <img src={trash} alt="icon-trash" />
-                </button>
+                </Button>
               </TdFlex>
             </tr>
           ))}

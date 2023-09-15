@@ -1,3 +1,4 @@
+import Button from '../../components/Button';
 import { icons } from '../../components/Sidebar/icons';
 
 import { formatDate } from '../../utils/formatDate';
@@ -50,13 +51,13 @@ export function History() {
               <td>{formatDate(order.createdAt)}</td>
               <td>{order.status}</td>
               <Actions>
-                <button>
+                <Button>
                   <img src={eye} alt="icon-eye" />
-                </button>
+                </Button>
 
-                <button>
+                <Button>
                   <img src={trash} alt="icon-trash" />
-                </button>
+                </Button>
               </Actions>
             </tr>
           ))}

@@ -3,7 +3,9 @@ import useAuth from '../../hooks/useAuth';
 import logout from '../../assets/images/log-off.svg';
 import { icons } from './icons';
 
+import Button from '../Button';
 import { IconsBar } from './components/IconsBar';
+
 import { Nav } from './styles';
 
 export default function Sidebar() {
@@ -16,12 +18,12 @@ export default function Sidebar() {
       <ul>
         <IconsBar icons={icons} />
 
-        <button onClick={signout}>
+        <Button onClick={signout}>
           <li>
             <img src={logout} alt="icon-logout" />
             Sair
           </li>
-        </button>
+        </Button>
       </ul>
     </Nav>
   );

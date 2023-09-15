@@ -7,9 +7,12 @@ interface ProductContextProps {
     newProduct: boolean,
     updateProduct: boolean,
     deleteProduct: boolean,
+    newIngredients: boolean,
   };
   productSelected: Product;
+  previewUrl: string;
   handleModalVisible: (key: string, value: boolean, item?: Product) => void;
+  handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const ProductContext = createContext({} as ProductContextProps);
@@ -23,9 +26,11 @@ export default function ProductProvider({ children }: ProductProviderProps) {
     newProduct: false,
     updateProduct: false,
     deleteProduct: false,
+    newIngredients: false,
   });
 
   const [productSelected, setProductSelected] = useState({} as Product);
+  const [previewUrl, setPreviewUrl] = useState('');
 
   const handleModalVisible = useCallback((key: string, value: boolean, item?: Product) => {
     setIsModalVisible((prevState) => ({
@@ -36,11 +41,27 @@ export default function ProductProvider({ children }: ProductProviderProps) {
     if (item) setProductSelected(item);
   }, []);
 
+  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setPreviewUrl(reader.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }, []);
+
   return (
     <ProductContext.Provider value={{
       isModalVisible,
       productSelected,
-      handleModalVisible
+      previewUrl,
+      handleModalVisible,
+      handleFileChange
     }}>
       {children}
     </ProductContext.Provider>

@@ -1,5 +1,6 @@
 import { api } from './api';
 
+import { FormData } from '../types/Login';
 import { Users } from '../types/Users';
 
 class UserServices {
@@ -11,6 +12,12 @@ class UserServices {
 
   async create(dataUser: Users) {
     const { data } = await api.post('/users', dataUser);
+
+    return data;
+  }
+
+  async login(dataUser: FormData) {
+    const { data } = await api.post('/login', dataUser);
 
     return data;
   }

@@ -7,6 +7,7 @@ import ProductServices from '../../services/ProductServices';
 
 import TableProducts from '../../components/Table/TableProducts';
 import TableCategories from '../../components/Table/components/TableCategories';
+import { ModalIngredients } from './components/ModalIngredients';
 import { ModalRegister } from './components/ModalRegister';
 import { ModalRemove } from './components/ModalRemove';
 
@@ -40,6 +41,7 @@ export default function Products() {
         isVisible={isModalVisible.newProduct}
         categories={categories.data}
       />
+      <ModalIngredients isVisible={isModalVisible.newIngredients} />
 
       <Header>
         <div>

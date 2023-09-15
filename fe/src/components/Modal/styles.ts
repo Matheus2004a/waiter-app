@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Overlay = styled.div`
   position: fixed;
@@ -12,7 +12,14 @@ export const Overlay = styled.div`
   align-items: center;
 `;
 
-export const ModalBody = styled.div`
+export const ModalBody = styled.div<{ isLoong?: boolean }>`
+  ${({ isLoong }) => isLoong && css`
+    max-width: calc(100% - 30%);
+    height: 80vh;
+    overflow-y: auto;
+    margin: 0 auto;
+  `}
+
   display: grid;
   gap: 32px;
   width: 100%;

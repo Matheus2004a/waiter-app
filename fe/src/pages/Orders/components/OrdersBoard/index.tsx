@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { Order } from '../../../../types/Order';
 import { OrderModal } from '../OrderModal';
 
+import Button from '../../../../components/Button';
 import { api } from '../../../../services/api';
 import { Board, OrdersContainer } from './styles';
 
@@ -89,14 +90,14 @@ export function OrdersBoard({
       {orders.length > 0 &&
         <OrdersContainer>
           {orders.map((order) => (
-            <button
+            <Button
               key={order._id}
               type='button'
               onClick={() => handleOpenModal(order)}
             >
               <strong>Mesa {order.table}</strong>
               <span>{order.products.length} itens</span>
-            </button>
+            </Button>
           ))}
         </OrdersContainer>
       }

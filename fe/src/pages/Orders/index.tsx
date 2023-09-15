@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import useOrders from './useOrders';
 
+import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import { icons } from '../../components/Sidebar/icons';
 import { Footer } from './components/OrderModal/styles';
@@ -31,9 +32,9 @@ export function Orders() {
             </figcaption>
           </figure>
 
-          <button onClick={() => setIsModalVisible(false)}>
+          <Button onClick={() => setIsModalVisible(false)}>
             <img src={closeIcon} alt="icon-close" />
-          </button>
+          </Button>
         </header>
 
         <ContentModal>
@@ -42,13 +43,13 @@ export function Orders() {
         </ContentModal>
 
         <Footer>
-          <button
+          <Button
             type='reset'
             onClick={() => setIsModalVisible(false)}
           >
             Não, continuar pedidos
-          </button>
-          <button type='button'>Sim, reiniciar o dia</button>
+          </Button>
+          <Button type='button'>Sim, reiniciar o dia</Button>
         </Footer>
       </Modal>
 

@@ -4,9 +4,10 @@ import { ModalBody, Overlay } from './styles';
 interface ModalProps {
   children: React.ReactNode;
   isVisible: boolean;
+  isLoong?: boolean;
 }
 
-export default function Modal({ children, isVisible }: ModalProps) {
+export default function Modal({ children, isVisible, isLoong }: ModalProps) {
   if (!isVisible) {
     return null;
   }
@@ -14,7 +15,7 @@ export default function Modal({ children, isVisible }: ModalProps) {
   return (
     <Portal containerId="portal-root">
       <Overlay>
-        <ModalBody>
+        <ModalBody isLoong={isLoong}>
           {children}
         </ModalBody>
       </Overlay>
