@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Fragment } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import useProductsModal from '../../../../hooks/useProductsModal';
 import ProductServices from '../../../../services/ProductServices';
-import { Category } from '../../../../types/Categories';
+import { Category, Ingredient } from '../../../../types/Categories';
 import { Product } from '../../../../types/Product';
 import { handleImageFallback } from '../../../../utils/fallbackImg';
 import { schemaProduct } from '../../../../validations/schemaProduct';
@@ -46,17 +46,15 @@ export function ModalRegister({ isVisible, categories }: ModalRegisterProps) {
 
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors }
   } = useForm<Product>({
     resolver: zodResolver(schemaProduct)
   });
 
-  const { fields } = useFieldArray({
-    name: 'ingredients',
-    control
-  });
+  const { getValues } = useFormContext();
+
+  const fields: Ingredient[] = getValues('ingredients');
 
   const queryClient = useQueryClient();
 
@@ -159,7 +157,7 @@ export function ModalRegister({ isVisible, categories }: ModalRegisterProps) {
           </GridCategory>
         </Fieldset>
 
-        <Fieldset isInvalid={errors.ingredients}>
+        <Fieldset>
           <HeaderIngredient>
             <legend>Ingredientes</legend>
             <Button type='reset' onClick={handleToggleModals}>
@@ -176,7 +174,6 @@ export function ModalRegister({ isVisible, categories }: ModalRegisterProps) {
             />
             <img src={searchIcon} alt="icon-search" />
           </ContentSearch>
-          {errors.ingredients && <span>{errors.ingredients.message}</span>}
 
           <List>
             {fields.map((field, index) => (

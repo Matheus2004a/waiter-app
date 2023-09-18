@@ -119,7 +119,7 @@ export function OrderModal({
           onClick={onCancelOrder}
           disabled={isLoading}
         >
-            Cancelar Pedido
+          Cancelar Pedido
         </Button>
         {order.status !== 'DONE' && (
           <Button

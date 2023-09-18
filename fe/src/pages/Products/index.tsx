@@ -1,5 +1,6 @@
 import { useQueries } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
 
 import useProductsModal from '../../hooks/useProductsModal';
 import CategoriesServices from '../../services/CategoriesServices';
@@ -32,10 +33,12 @@ export default function Products() {
     ]
   });
 
+  const methods = useForm();
+
   const { isModalVisible } = useProductsModal();
 
   return (
-    <main>
+    <FormProvider {...methods}>
       <ModalRemove isVisible={isModalVisible.deleteProduct} />
       <ModalRegister
         isVisible={isModalVisible.newProduct}
@@ -43,47 +46,50 @@ export default function Products() {
       />
       <ModalIngredients isVisible={isModalVisible.newIngredients} />
 
-      <Header>
-        <div>
-          <figure>
-            <img src={menu} alt="icon-menu" />
-            <figcaption>
-              <h3>Cardápio</h3>
-            </figcaption>
-          </figure>
+      <main>
 
-          <p>Gerencie os produtos do seu estabelecimento</p>
-        </div>
-      </Header>
+        <Header>
+          <div>
+            <figure>
+              <img src={menu} alt="icon-menu" />
+              <figcaption>
+                <h3>Cardápio</h3>
+              </figcaption>
+            </figure>
 
-      <Flex>
-        <Nav>
-          <ul>
-            <MenuItem
-              isActive={isActive === 'product'}
-              onClick={() => setIsActive('product')}>
-              Produtos
-            </MenuItem>
-            <MenuItem
-              isActive={isActive === 'category'}
-              onClick={() => setIsActive('category')}>
-              Categorias
-            </MenuItem>
-          </ul>
-        </Nav>
-      </Flex>
+            <p>Gerencie os produtos do seu estabelecimento</p>
+          </div>
+        </Header>
 
-      <TableProducts
-        data={products.data}
-        isChecked={isActive === 'product'}
-        isLoading={products.isLoading}
-      />
+        <Flex>
+          <Nav>
+            <ul>
+              <MenuItem
+                isActive={isActive === 'product'}
+                onClick={() => setIsActive('product')}>
+                Produtos
+              </MenuItem>
+              <MenuItem
+                isActive={isActive === 'category'}
+                onClick={() => setIsActive('category')}>
+                Categorias
+              </MenuItem>
+            </ul>
+          </Nav>
+        </Flex>
 
-      <TableCategories
-        data={categories.data}
-        isChecked={isActive === 'category'}
-        isLoading={categories.isLoading}
-      />
-    </main>
+        <TableProducts
+          data={products.data}
+          isChecked={isActive === 'product'}
+          isLoading={products.isLoading}
+        />
+
+        <TableCategories
+          data={categories.data}
+          isChecked={isActive === 'category'}
+          isLoading={categories.isLoading}
+        />
+      </main>
+    </FormProvider>
   );
 }

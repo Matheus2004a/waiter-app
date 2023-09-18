@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 import useProductsModal from '../../../../hooks/useProductsModal';
 import { FormDataCategory } from '../../../../types/Categories';
@@ -24,6 +24,10 @@ export function ModalIngredients({ isVisible }: { isVisible: boolean }) {
     resolver: zodResolver(schemaCategories)
   });
 
+  const { append } = useFieldArray({
+    name: 'ingredients',
+  });
+
   const isDisableButton = Object.values(errors).length > 0;
 
   return (
@@ -39,7 +43,7 @@ export function ModalIngredients({ isVisible }: { isVisible: boolean }) {
         </Button>
       </header>
 
-      <Form onSubmit={handleSubmit((data) => console.log(data))}>
+      <Form onSubmit={handleSubmit((data) => append(data))}>
         <Fieldset isInvalid={errors.icon}>
           <label htmlFor="emoji">Emoji</label>
           <input

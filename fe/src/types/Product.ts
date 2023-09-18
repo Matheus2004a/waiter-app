@@ -1,10 +1,10 @@
-import { Category } from './Categories';
+import { Ingredient } from './Categories';
 
 export interface Product {
   _id: string;
   name: string;
   description: string;
-  ingredients: Category[];
+  ingredients: Ingredient[];
   imagePath: string;
   price: number;
   category: string;

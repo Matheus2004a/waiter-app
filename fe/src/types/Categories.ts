@@ -6,10 +6,7 @@ export interface Category {
   icon: string,
 }
 
-export interface FormDataCategory {
-  icon: string;
-  name: string;
-}
+export type Ingredient = Omit<Category, '_id'> & Record<'id', string>
 
 export type CategoryProps = ModalProps & {
   item: Category
