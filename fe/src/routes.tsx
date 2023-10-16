@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { History } from './pages/History';
-import { SplashScreen } from './pages/Login/components/SplashScreen';
+import Login from './pages/Login';
 import { Orders } from './pages/Orders';
 import Products from './pages/Products';
 import Users from './pages/Users';
@@ -16,7 +16,7 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<SplashScreen />} />
+        <Route path='/' element={<Login />} />
         <Route element={<DashboardLayout />}>
           <Route element={<PrivateRoutes />}>
             <Route path='/orders' element={<Orders />} />

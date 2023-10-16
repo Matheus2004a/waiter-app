@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
+import z from 'zod';
 
 import useProductsModal from '../../../../hooks/useProductsModal';
-import { FormDataCategory } from '../../../../types/Categories';
 import { schemaCategories } from '../../../../validations/schemaCategories';
 
 import Button from '../../../../components/Button';
@@ -12,6 +12,8 @@ import { Fieldset, Form } from '../../../../components/Form/styles';
 import { Flex } from '../../../../pages/History/styles';
 
 import closeIcon from '../../../../assets/images/close-icon.svg';
+
+type FormDataCategory = z.infer<typeof schemaCategories>;
 
 export function ModalIngredients({ isVisible }: { isVisible: boolean }) {
   const { handleModalVisible } = useProductsModal();
